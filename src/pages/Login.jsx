@@ -1,3 +1,4 @@
+import { useHistory } from 'react-router-dom';
 import { useContext } from 'react';
 import { LoginContext } from '../providers/LoginProvider';
 
@@ -8,6 +9,12 @@ function Login() {
 
   const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
   const isFormValid = emailRegex.test(email) && password.length > MAX_LENGTH;
+  const history = useHistory();
+
+  const handleClick = () => {
+    localStorage.setItem('user', JSON.stringify({ email }));
+    history.push('/meals');
+  };
 
   return (
     <main>
@@ -30,7 +37,11 @@ function Login() {
           onChange={ ({ target }) => setPassword(target.value) }
           value={ password }
         />
-        <button type="submit" data-testid="login-submit-btn" disabled={ !isFormValid }>
+        <button
+          data-testid="login-submit-btn"
+          disabled={ !isFormValid }
+          onClick={ handleClick }
+        >
           Entrar
         </button>
       </form>
