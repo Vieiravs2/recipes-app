@@ -95,7 +95,7 @@ describe('Testes no SearchBar', () => {
 
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
-        'https://www.themealdb.com/api/json/v1/1/filter.php?i=Frango',
+        'filter.php?i=Frango',
       );
     });
   });
@@ -123,7 +123,7 @@ describe('Testes no SearchBar', () => {
 
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
-        'https://www.themealdb.com/api/json/v1/1/search.php?s=Frango',
+        'search.php?s=Frango',
       );
     });
   });
@@ -151,7 +151,7 @@ describe('Testes no SearchBar', () => {
 
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
-        'https://www.themealdb.com/api/json/v1/1/search.php?f=F',
+        'search.php?f=F',
       );
     });
   });
