@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import LoginProvider from '../providers/LoginProvider';
 import App from '../App';
+import renderWithRouter from '../helpers/renderWithRouter';
 
 describe('Casos de teste da página de _Login_', () => {
   it('Testa inputs da página de login', async () => {
@@ -14,29 +15,48 @@ describe('Casos de teste da página de _Login_', () => {
       </BrowserRouter>,
     );
 
-    const email = screen.getByRole('textbox');
-    const password = screen.getByPlaceholderText(/senha/i);
+    const emailInput = screen.getByRole('textbox');
+    const passwordInput = screen.getByPlaceholderText(/senha/i);
     const btn = screen.getByRole('button');
-    userEvent.type(email, 'email@test.com');
-    userEvent.type(password, '1234567');
+    userEvent.type(emailInput, 'email@test.com');
+    userEvent.type(passwordInput, '1234567');
     userEvent.click(btn);
 
     const searchBtn = screen.getByRole('button', { name: /search-icon/i });
     userEvent.click(searchBtn);
-    const searchInput = screen.findByRole('textbox');
-    userEvent.type(searchInput, 'teste de input');
-    const testeDeInput = screen.findByText('teste de input');
 
-    waitFor(() => expect(testeDeInput).toBeInTheDocument());
+    const searchInput = screen.getByRole('textbox');
+    userEvent.type(searchInput, 'Testando o meu Input');
+
+    expect(searchInput).toHaveValue('Testando o meu Input');
+
+    expect(searchInput).toBeInTheDocument();
 
     userEvent.click(searchBtn);
 
-    waitFor(() => expect(testeDeInput).not.toBeInTheDocument());
+    expect(searchInput).not.toBeInTheDocument();
 
     const profileBtn = screen.getByRole('img', { name: /profile/i });
     userEvent.click(profileBtn);
 
     const profileTxt = screen.findByRole('heading', { name: /profile/i });
     waitFor(() => expect(profileTxt).toBeInTheDocument());
+  });
+
+  it('Testa se o redirecionamento acontece', async () => {
+    const { history } = renderWithRouter(
+      <LoginProvider>
+        <App />
+      </LoginProvider>,
+    );
+    const emailInput = screen.getByRole('textbox');
+    const passwordInput = screen.getByPlaceholderText(/senha/i);
+    const btn = screen.getByRole('button');
+    userEvent.type(emailInput, 'email@test.com');
+    userEvent.type(passwordInput, '1234567');
+    userEvent.click(btn);
+    const profileBtn = screen.getByRole('img', { name: /profile/i });
+    userEvent.click(profileBtn);
+    expect(history.location.pathname).toBe('/profile');
   });
 });
