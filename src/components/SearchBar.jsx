@@ -21,6 +21,18 @@ export default function SearchBar() {
     }
   }, [pathname]);
 
+  const redirectDatails = useCallback(() => {
+    if (responseAPI.meals.length === 1) {
+      return history.push(`/meals/${responseAPI.meals[0].idMeal}`);
+    } if (responseAPI.drinks.length === 1) {
+      return history.push(`/drinks/${responseAPI.drinks[0].idDrink}`);
+    }
+  }, [history, responseAPI]);
+
+  useEffect(() => {
+    redirectDatails();
+  }, [responseAPI, redirectDatails]);
+
   const fetchData = useCallback(async () => {
     switch (selectedOption) {
     case 'Ingredient': {
@@ -47,10 +59,6 @@ export default function SearchBar() {
       break;
     }
   }, [searchValue, selectedOption, endpoint]);
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, [fetchData]);
 
   const handleOptionChange = ({ target }) => {
     const { value } = target;
