@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import LoginProvider from '../providers/LoginProvider';
 import App from '../App';
 
-describe('', () => {
+describe('Casos de testes do Footer', () => {
   it('renderiza o footer corretamente', () => {
     render(
       <BrowserRouter>
