@@ -21,44 +21,39 @@ export default function SearchBar() {
     }
   }, [pathname]);
 
-  const redirectDatails = useCallback(() => {
-    if (responseAPI.meals.length === 1) {
-      return history.push(`/meals/${responseAPI.meals[0].idMeal}`);
-    } if (responseAPI.drinks.length === 1) {
-      return history.push(`/drinks/${responseAPI.drinks[0].idDrink}`);
-    }
-  }, [history, responseAPI]);
-
-  useEffect(() => {
-    redirectDatails();
-  }, [responseAPI, redirectDatails]);
-
   const fetchData = useCallback(async () => {
+    let response;
     switch (selectedOption) {
     case 'Ingredient': {
       const getAPI = await fetch(`${endpoint}filter.php?i=${searchValue}`);
-      const response = await getAPI.json();
-      setResponseAPI(response);
+      response = await getAPI.json();
       break;
     }
     case 'Name': {
       const getAPI = await fetch(`${endpoint}search.php?s=${searchValue}`);
-      const response = await getAPI.json();
-      setResponseAPI(response);
+      response = await getAPI.json();
       break;
     }
     case 'First letter': {
       if (searchValue.length === 1) {
         const getAPI = await fetch(`${endpoint}search.php?f=${searchValue}`);
-        const response = await getAPI.json();
-        return response;
+        response = await getAPI.json();
+      } else {
+        return global.alert('Your search must have only 1 (one) character');
       }
-      return global.alert('Your search must have only 1 (one) character');
-    }
-    default:
       break;
     }
-  }, [searchValue, selectedOption, endpoint]);
+    default:
+    }
+
+    if (response && response.meals && response.meals.length === 1) {
+      history.push(`/meals/${response.meals[0].idMeal}`);
+    } else if (response && response.drinks && response.drinks.length === 1) {
+      history.push(`/drinks/${response.drinks[0].idDrink}`);
+    } else {
+      setResponseAPI(response);
+    }
+  }, [searchValue, selectedOption, endpoint, history]);
 
   const handleOptionChange = ({ target }) => {
     const { value } = target;
