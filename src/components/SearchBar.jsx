@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 export default function SearchBar() {
   const [searchValue, setSearchValue] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
   const [responseAPI, setResponseAPI] = useState('');
 
-  const searchIngredientAPI = async () => {
+  const searchIngredientAPI = useCallback(async () => {
     const getAPI = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchValue}`);
     const response = await getAPI.json();
     return response;
-  };
+  }, [searchValue]);
 
-  const searchNameAPI = async () => {
+  const searchNameAPI = useCallback(async () => {
     const getAPI = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchValue}`);
     const response = await getAPI.json();
     return response;
-  };
+  }, [searchValue]);
 
-  const searchFirstLetterAPI = async () => {
+  const searchFirstLetterAPI = useCallback(async () => {
     if (searchValue.length === 1) {
       const getAPI = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${searchValue}`);
       const response = await getAPI.json();
       return response;
     }
     return global.alert('Your search must have only 1 (one) character');
-  };
+  }, [searchValue]);
 
   useEffect(() => {
     switch (selectedOption) {
@@ -40,7 +40,14 @@ export default function SearchBar() {
     default:
       break;
     }
-  }, [responseAPI, searchValue, selectedOption]);
+  }, [
+    responseAPI,
+    searchIngredientAPI,
+    searchNameAPI,
+    searchFirstLetterAPI,
+    searchValue,
+    selectedOption,
+  ]);
 
   const handleOptionChange = ({ target }) => {
     const { value } = target;
