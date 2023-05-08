@@ -5,49 +5,36 @@ export default function SearchBar() {
   const [selectedOption, setSelectedOption] = useState('');
   const [responseAPI, setResponseAPI] = useState('');
 
-  const searchIngredientAPI = useCallback(async () => {
-    const getAPI = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchValue}`);
-    const response = await getAPI.json();
-    return response;
-  }, [searchValue]);
-
-  const searchNameAPI = useCallback(async () => {
-    const getAPI = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchValue}`);
-    const response = await getAPI.json();
-    return response;
-  }, [searchValue]);
-
-  const searchFirstLetterAPI = useCallback(async () => {
-    if (searchValue.length === 1) {
-      const getAPI = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${searchValue}`);
-      const response = await getAPI.json();
-      return response;
-    }
-    return global.alert('Your search must have only 1 (one) character');
-  }, [searchValue]);
-
-  useEffect(() => {
+  const fetchData = useCallback(async () => {
     switch (selectedOption) {
-    case 'Ingredient':
-      setResponseAPI(searchIngredientAPI());
+    case 'Ingredient': {
+      const getAPI = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchValue}`);
+      const response = await getAPI.json();
+      setResponseAPI(response);
       break;
-    case 'Name':
-      setResponseAPI(searchNameAPI());
+    }
+    case 'Name': {
+      const getAPI = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchValue}`);
+      const response = await getAPI.json();
+      setResponseAPI(response);
       break;
-    case 'First letter':
-      setResponseAPI(searchFirstLetterAPI());
-      break;
+    }
+    case 'First letter': {
+      if (searchValue.length === 1) {
+        const getAPI = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${searchValue}`);
+        const response = await getAPI.json();
+        return response;
+      }
+      return global.alert('Your search must have only 1 (one) character');
+    }
     default:
       break;
     }
-  }, [
-    responseAPI,
-    searchIngredientAPI,
-    searchNameAPI,
-    searchFirstLetterAPI,
-    searchValue,
-    selectedOption,
-  ]);
+  }, [searchValue, selectedOption]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handleOptionChange = ({ target }) => {
     const { value } = target;
@@ -57,6 +44,8 @@ export default function SearchBar() {
   const handleChange = ({ target: { value } }) => {
     setSearchValue(value);
   };
+
+  console.log(responseAPI);
 
   return (
     <div>
@@ -102,6 +91,7 @@ export default function SearchBar() {
       <button
         type="button"
         data-testid="exec-search-btn"
+        onClick={ fetchData }
       >
         Buscar
       </button>
