@@ -3,18 +3,14 @@ import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
+import SearchBar from './SearchBar';
 
 export default function Header({ title, profile, search }) {
   const history = useHistory();
   const [searchInputEnable, setSearchInputEnable] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
 
   const redirectProfile = () => {
     history.push('/profile');
-  };
-
-  const handleChange = ({ target: { value } }) => {
-    setSearchValue(value);
   };
 
   return (
@@ -43,12 +39,7 @@ export default function Header({ title, profile, search }) {
       )}
       {
         searchInputEnable
-          && <input
-            type="text"
-            data-testid="search-input"
-            value={ searchValue }
-            onChange={ handleChange }
-          />
+          && <SearchBar />
       }
       {' '}
 
