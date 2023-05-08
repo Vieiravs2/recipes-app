@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
@@ -6,9 +6,15 @@ import searchIcon from '../images/searchIcon.svg';
 
 export default function Header({ title, profile, search }) {
   const history = useHistory();
+  const [searchInputEnable, setSearchInputEnable] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
 
   const redirectProfile = () => {
     history.push('/profile');
+  };
+
+  const handleChange = ({ target: { value } }) => {
+    setSearchValue(value);
   };
 
   return (
@@ -24,8 +30,28 @@ export default function Header({ title, profile, search }) {
         )}
       </button>
       { search
-      && <img src={ searchIcon } alt="search-icon" data-testid="search-top-btn" />}
-      {/* todo: renderização condicional da SearchBar.jsx (req 9) */}
+      && (
+        <button
+          onClick={ () => setSearchInputEnable(!searchInputEnable) }
+        >
+          <img
+            src={ searchIcon }
+            alt="search-icon"
+            data-testid="search-top-btn"
+          />
+        </button>
+      )}
+      {
+        searchInputEnable
+          && <input
+            type="text"
+            data-testid="search-input"
+            value={ searchValue }
+            onChange={ handleChange }
+          />
+      }
+      {' '}
+
     </div>
   );
 }
