@@ -1,27 +1,43 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 export default function SearchBar() {
   const [searchValue, setSearchValue] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
   const [responseAPI, setResponseAPI] = useState('');
+  const [endpoint, setEndpoint] = useState('');
+
+  const history = useHistory();
+  const URL_MEALS = 'https://www.themealdb.com/api/json/v1/1/';
+  const URL_DRINKS = 'https://www.thecocktaildb.com/api/json/v1/1/';
+  const { pathname } = history.location;
+
+  useEffect(() => {
+    console.log(pathname);
+    if (pathname === '/meals') {
+      setEndpoint(URL_MEALS);
+    } else if (pathname === '/drinks') {
+      setEndpoint(URL_DRINKS);
+    }
+  }, [pathname]);
 
   const fetchData = useCallback(async () => {
     switch (selectedOption) {
     case 'Ingredient': {
-      const getAPI = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchValue}`);
+      const getAPI = await fetch(`${endpoint}filter.php?i=${searchValue}`);
       const response = await getAPI.json();
       setResponseAPI(response);
       break;
     }
     case 'Name': {
-      const getAPI = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchValue}`);
+      const getAPI = await fetch(`${endpoint}search.php?s=${searchValue}`);
       const response = await getAPI.json();
       setResponseAPI(response);
       break;
     }
     case 'First letter': {
       if (searchValue.length === 1) {
-        const getAPI = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${searchValue}`);
+        const getAPI = await fetch(`${endpoint}search.php?f=${searchValue}`);
         const response = await getAPI.json();
         return response;
       }
@@ -30,11 +46,11 @@ export default function SearchBar() {
     default:
       break;
     }
-  }, [searchValue, selectedOption]);
+  }, [searchValue, selectedOption, endpoint]);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  // useEffect(() => {
+  //   fetchData();
+  // }, [fetchData]);
 
   const handleOptionChange = ({ target }) => {
     const { value } = target;
