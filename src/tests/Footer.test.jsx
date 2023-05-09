@@ -35,8 +35,36 @@ describe('Casos de testes do Footer', () => {
     const { pathname } = history.location;
 
     expect(pathname).toBe('/drinks');
+  });
 
-    const mealBtnAfterClick = screen.getByAltText('meal-icon');
-    expect(mealBtnAfterClick).toBeInTheDocument();
+  it('Testa o redirecionamento do botão _meals_', () => {
+    const history = createMemoryHistory();
+    render(
+      <BrowserRouter>
+        <LoginProvider>
+          <Router history={ history }>
+            <App />
+          </Router>
+        </LoginProvider>
+      </BrowserRouter>,
+    );
+
+    const emailInput = screen.getByRole('textbox');
+    const passwordInput = screen.getByPlaceholderText(/senha/i);
+    const btn = screen.getByRole('button');
+    userEvent.type(emailInput, 'email@test.com');
+    userEvent.type(passwordInput, '1234567');
+    userEvent.click(btn);
+
+    const drinkBtn = screen.getByAltText('drink-icon');
+    userEvent.click(drinkBtn);
+
+    const mealBtn = screen.getByAltText('meal-icon');
+    expect(mealBtn).toBeInTheDocument();
+
+    userEvent.click(mealBtn);
+    const { pathname } = history.location;
+
+    expect(pathname).toBe('/meals');
   });
 });
