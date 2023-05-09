@@ -1,36 +1,27 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import { FetchContext } from '../providers/FetchProvider';
+
+const URL_MEALS = 'https://www.themealdb.com/api/json/v1/1/';
+const URL_DRINKS = 'https://www.thecocktaildb.com/api/json/v1/1/';
 
 export default function SearchBar() {
+  const { setResponseAPI } = useContext(FetchContext);
+
   const [searchValue, setSearchValue] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
-  const [responseAPI, setResponseAPI] = useState('');
-  const [endpoint, setEndpoint] = useState('');
 
   const history = useHistory();
-  const URL_MEALS = 'https://www.themealdb.com/api/json/v1/1/';
-  const URL_DRINKS = 'https://www.thecocktaildb.com/api/json/v1/1/';
   const { pathname } = history.location;
 
-  useEffect(() => {
-    console.log(pathname);
-    if (pathname === '/meals') {
-      setEndpoint(URL_MEALS);
-    } else if (pathname === '/drinks') {
-      setEndpoint(URL_DRINKS);
-    }
-  }, [pathname]);
-
   const fetchData = useCallback(async () => {
+    console.log(selectedOption);
     let response;
+    const endpoint = pathname === '/meals' ? URL_MEALS : URL_DRINKS;
+
     switch (selectedOption) {
     case 'Ingredient': {
       const getAPI = await fetch(`${endpoint}filter.php?i=${searchValue}`);
-      response = await getAPI.json();
-      break;
-    }
-    case 'Name': {
-      const getAPI = await fetch(`${endpoint}search.php?s=${searchValue}`);
       response = await getAPI.json();
       break;
     }
@@ -43,17 +34,23 @@ export default function SearchBar() {
       }
       break;
     }
-    default:
+    default: {
+      console.log('entrou');
+      const getAPI = await fetch(`${endpoint}search.php?s=${searchValue}`);
+      response = await getAPI.json();
+      console.log(response);
+      break;
+    }
     }
 
-    if (response && response.meals && response.meals.length === 1) {
-      history.push(`/meals/${response.meals[0].idMeal}`);
-    } else if (response && response.drinks && response.drinks.length === 1) {
-      history.push(`/drinks/${response.drinks[0].idDrink}`);
+    const idProp = pathname === '/meals' ? 'idMeal' : 'idDrink';
+
+    if (response && response[pathname.substring(1)].length === 1) {
+      history.push(`${pathname}/${response[pathname.substring(1)][0][idProp]}`);
     } else {
-      setResponseAPI(response);
+      setResponseAPI(response[pathname.substring(1)]);
     }
-  }, [searchValue, selectedOption, endpoint, history]);
+  }, [searchValue, selectedOption, history, setResponseAPI, pathname]);
 
   const handleOptionChange = ({ target }) => {
     const { value } = target;
@@ -63,8 +60,6 @@ export default function SearchBar() {
   const handleChange = ({ target: { value } }) => {
     setSearchValue(value);
   };
-
-  console.log(responseAPI);
 
   return (
     <div>
