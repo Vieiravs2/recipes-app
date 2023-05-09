@@ -16,7 +16,7 @@ export default function SearchBar() {
 
   const fetchData = useCallback(async () => {
     console.log(selectedOption);
-    let response;
+    let response = [];
     const endpoint = pathname === '/meals' ? URL_MEALS : URL_DRINKS;
 
     switch (selectedOption) {
@@ -35,15 +35,19 @@ export default function SearchBar() {
       break;
     }
     default: {
-      console.log('entrou');
       const getAPI = await fetch(`${endpoint}search.php?s=${searchValue}`);
       response = await getAPI.json();
-      console.log(response);
+      console.log('Response', response);
       break;
     }
     }
 
     const idProp = pathname === '/meals' ? 'idMeal' : 'idDrink';
+
+    if (response[pathname.substring(1)] === null) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+      return;
+    }
 
     if (response && response[pathname.substring(1)].length === 1) {
       history.push(`${pathname}/${response[pathname.substring(1)][0][idProp]}`);
