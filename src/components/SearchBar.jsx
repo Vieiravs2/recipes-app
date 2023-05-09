@@ -1,14 +1,17 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import { FetchContext } from '../providers/FetchProvider';
 
 const URL_MEALS = 'https://www.themealdb.com/api/json/v1/1/';
 const URL_DRINKS = 'https://www.thecocktaildb.com/api/json/v1/1/';
 
 export default function SearchBar() {
+  const { setResponseAPI } = useContext(FetchContext);
+
   const [searchValue, setSearchValue] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
-  const [responseAPI, setResponseAPI] = useState('');
   const [endpoint, setEndpoint] = useState('');
+  const [drinksOrMeals, setDrinksOrMeals] = useState('');
 
   const history = useHistory();
   const { pathname } = history.location;
@@ -17,8 +20,10 @@ export default function SearchBar() {
     console.log(pathname);
     if (pathname === '/meals') {
       setEndpoint(URL_MEALS);
+      setDrinksOrMeals('meals');
     } else if (pathname === '/drinks') {
       setEndpoint(URL_DRINKS);
+      setDrinksOrMeals('drinks');
     }
   }, [pathname]);
 
@@ -52,9 +57,9 @@ export default function SearchBar() {
     } else if (response && response.drinks && response.drinks.length === 1) {
       history.push(`/drinks/${response.drinks[0].idDrink}`);
     } else {
-      setResponseAPI(response);
+      setResponseAPI(response[drinksOrMeals]);
     }
-  }, [searchValue, selectedOption, endpoint, history]);
+  }, [searchValue, selectedOption, endpoint, history, setResponseAPI, drinksOrMeals]);
 
   const handleOptionChange = ({ target }) => {
     const { value } = target;
@@ -64,8 +69,6 @@ export default function SearchBar() {
   const handleChange = ({ target: { value } }) => {
     setSearchValue(value);
   };
-
-  console.log(responseAPI);
 
   return (
     <div>

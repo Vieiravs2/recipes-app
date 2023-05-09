@@ -5,13 +5,16 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import LoginProvider from './providers/LoginProvider';
+import FetchProvider from './providers/FetchProvider';
 
 ReactDOM
   .createRoot(document.getElementById('root'))
   .render(
     <BrowserRouter>
       <LoginProvider>
-        <App />
+        <FetchProvider>
+          <App />
+        </FetchProvider>
       </LoginProvider>
     </BrowserRouter>,
   );
