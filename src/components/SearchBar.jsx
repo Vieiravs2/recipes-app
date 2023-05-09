@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useContext } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { FetchContext } from '../providers/FetchProvider';
 
@@ -10,33 +10,18 @@ export default function SearchBar() {
 
   const [searchValue, setSearchValue] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
-  const [endpoint, setEndpoint] = useState('');
-  const [drinksOrMeals, setDrinksOrMeals] = useState('');
 
   const history = useHistory();
   const { pathname } = history.location;
 
-  useEffect(() => {
-    console.log(pathname);
-    if (pathname === '/meals') {
-      setEndpoint(URL_MEALS);
-      setDrinksOrMeals('meals');
-    } else if (pathname === '/drinks') {
-      setEndpoint(URL_DRINKS);
-      setDrinksOrMeals('drinks');
-    }
-  }, [pathname]);
-
   const fetchData = useCallback(async () => {
+    console.log(selectedOption);
     let response;
+    const endpoint = pathname === '/meals' ? URL_MEALS : URL_DRINKS;
+
     switch (selectedOption) {
     case 'Ingredient': {
       const getAPI = await fetch(`${endpoint}filter.php?i=${searchValue}`);
-      response = await getAPI.json();
-      break;
-    }
-    case 'Name': {
-      const getAPI = await fetch(`${endpoint}search.php?s=${searchValue}`);
       response = await getAPI.json();
       break;
     }
@@ -49,17 +34,23 @@ export default function SearchBar() {
       }
       break;
     }
-    default:
+    default: {
+      console.log('entrou');
+      const getAPI = await fetch(`${endpoint}search.php?s=${searchValue}`);
+      response = await getAPI.json();
+      console.log(response);
+      break;
+    }
     }
 
-    if (response && response.meals && response.meals.length === 1) {
-      history.push(`/meals/${response.meals[0].idMeal}`);
-    } else if (response && response.drinks && response.drinks.length === 1) {
-      history.push(`/drinks/${response.drinks[0].idDrink}`);
+    const idProp = pathname === '/meals' ? 'idMeal' : 'idDrink';
+
+    if (response && response[pathname.substring(1)].length === 1) {
+      history.push(`${pathname}/${response[pathname.substring(1)][0][idProp]}`);
     } else {
-      setResponseAPI(response[drinksOrMeals]);
+      setResponseAPI(response[pathname.substring(1)]);
     }
-  }, [searchValue, selectedOption, endpoint, history, setResponseAPI, drinksOrMeals]);
+  }, [searchValue, selectedOption, history, setResponseAPI, pathname]);
 
   const handleOptionChange = ({ target }) => {
     const { value } = target;

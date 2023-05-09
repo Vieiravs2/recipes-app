@@ -8,7 +8,7 @@ function FetchProvider({ children }) {
 
   const values = useMemo(() => ({
     responseAPI, setResponseAPI,
-  }), [responseAPI, setResponseAPI]);
+  }), [responseAPI]);
 
   return (
     <FetchContext.Provider value={ values }>
