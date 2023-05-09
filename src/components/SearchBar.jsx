@@ -1,6 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
+const URL_MEALS = 'https://www.themealdb.com/api/json/v1/1/';
+const URL_DRINKS = 'https://www.thecocktaildb.com/api/json/v1/1/';
+
 export default function SearchBar() {
   const [searchValue, setSearchValue] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
@@ -8,8 +11,6 @@ export default function SearchBar() {
   const [endpoint, setEndpoint] = useState('');
 
   const history = useHistory();
-  const URL_MEALS = 'https://www.themealdb.com/api/json/v1/1/';
-  const URL_DRINKS = 'https://www.thecocktaildb.com/api/json/v1/1/';
   const { pathname } = history.location;
 
   useEffect(() => {
