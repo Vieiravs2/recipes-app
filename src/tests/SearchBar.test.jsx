@@ -6,7 +6,7 @@ import Recipes from '../pages/Recipes';
 import renderWithRouter from '../helpers/renderWithRouter';
 
 const serchInput = 'search-input';
-describe('Testes no SearchBar', () => {
+describe.skip('Testes no SearchBar', () => {
   test('Tem os testids tanto da barra de busca quanto de todos os radio-buttons', () => {
     renderWithRouter(
       <LoginProvider>

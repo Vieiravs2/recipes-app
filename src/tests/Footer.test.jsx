@@ -4,6 +4,7 @@ import { BrowserRouter, Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import LoginProvider from '../providers/LoginProvider';
 import App from '../App';
+import FetchProvider from '../providers/FetchProvider';
 
 describe('Casos de testes do Footer', () => {
   it('renderiza o footer corretamente', () => {
@@ -11,9 +12,11 @@ describe('Casos de testes do Footer', () => {
     render(
       <BrowserRouter>
         <LoginProvider>
-          <Router history={ history }>
-            <App />
-          </Router>
+          <FetchProvider>
+            <Router history={ history }>
+              <App />
+            </Router>
+          </FetchProvider>
         </LoginProvider>
       </BrowserRouter>,
     );
@@ -42,9 +45,11 @@ describe('Casos de testes do Footer', () => {
     render(
       <BrowserRouter>
         <LoginProvider>
-          <Router history={ history }>
-            <App />
-          </Router>
+          <FetchProvider>
+            <Router history={ history }>
+              <App />
+            </Router>
+          </FetchProvider>
         </LoginProvider>
       </BrowserRouter>,
     );
