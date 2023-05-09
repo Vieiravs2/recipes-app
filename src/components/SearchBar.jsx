@@ -1,40 +1,59 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 export default function SearchBar() {
   const [searchValue, setSearchValue] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
   const [responseAPI, setResponseAPI] = useState('');
+  const [endpoint, setEndpoint] = useState('');
+
+  const history = useHistory();
+  const URL_MEALS = 'https://www.themealdb.com/api/json/v1/1/';
+  const URL_DRINKS = 'https://www.thecocktaildb.com/api/json/v1/1/';
+  const { pathname } = history.location;
+
+  useEffect(() => {
+    console.log(pathname);
+    if (pathname === '/meals') {
+      setEndpoint(URL_MEALS);
+    } else if (pathname === '/drinks') {
+      setEndpoint(URL_DRINKS);
+    }
+  }, [pathname]);
 
   const fetchData = useCallback(async () => {
+    let response;
     switch (selectedOption) {
     case 'Ingredient': {
-      const getAPI = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchValue}`);
-      const response = await getAPI.json();
-      setResponseAPI(response);
+      const getAPI = await fetch(`${endpoint}filter.php?i=${searchValue}`);
+      response = await getAPI.json();
       break;
     }
     case 'Name': {
-      const getAPI = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchValue}`);
-      const response = await getAPI.json();
-      setResponseAPI(response);
+      const getAPI = await fetch(`${endpoint}search.php?s=${searchValue}`);
+      response = await getAPI.json();
       break;
     }
     case 'First letter': {
       if (searchValue.length === 1) {
-        const getAPI = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${searchValue}`);
-        const response = await getAPI.json();
-        return response;
+        const getAPI = await fetch(`${endpoint}search.php?f=${searchValue}`);
+        response = await getAPI.json();
+      } else {
+        return global.alert('Your search must have only 1 (one) character');
       }
-      return global.alert('Your search must have only 1 (one) character');
-    }
-    default:
       break;
     }
-  }, [searchValue, selectedOption]);
+    default:
+    }
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    if (response && response.meals && response.meals.length === 1) {
+      history.push(`/meals/${response.meals[0].idMeal}`);
+    } else if (response && response.drinks && response.drinks.length === 1) {
+      history.push(`/drinks/${response.drinks[0].idDrink}`);
+    } else {
+      setResponseAPI(response);
+    }
+  }, [searchValue, selectedOption, endpoint, history]);
 
   const handleOptionChange = ({ target }) => {
     const { value } = target;
