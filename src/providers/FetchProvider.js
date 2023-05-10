@@ -5,10 +5,24 @@ export const FetchContext = createContext();
 
 function FetchProvider({ children }) {
   const [responseAPI, setResponseAPI] = useState([]);
+  const [categoryMeals, setCategoryMeals] = useState([]);
+  const [categoryDrinks, setCategoryDrinks] = useState([]);
 
   const values = useMemo(() => ({
-    responseAPI, setResponseAPI,
-  }), [responseAPI]);
+    categoryMeals,
+    setCategoryMeals,
+    categoryDrinks,
+    setCategoryDrinks,
+    responseAPI,
+    setResponseAPI,
+  }), [
+    categoryMeals,
+    responseAPI,
+    setCategoryMeals,
+    categoryDrinks,
+    setCategoryDrinks,
+    setResponseAPI,
+  ]);
 
   return (
     <FetchContext.Provider value={ values }>

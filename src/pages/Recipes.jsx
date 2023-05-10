@@ -3,31 +3,53 @@ import { useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { FetchContext } from '../providers/FetchProvider';
+import ButtonDrinks from '../components/ButtonDrinks';
+import ButtonMeals from '../components/ButtonMeals';
 
 const MAX_LENGTH = 12;
 
 export default function Recipes() {
-  const { responseAPI, setResponseAPI } = useContext(FetchContext);
+  const {
+    categoryMeals,
+    setCategoryMeals,
+    categoryDrinks,
+    setCategoryDrinks,
+    responseAPI,
+    setResponseAPI,
+
+  } = useContext(FetchContext);
 
   const location = useLocation();
   const { pathname } = location;
-  console.log(responseAPI);
 
   useEffect(() => {
     async function fetchData() {
       if (pathname === '/meals') {
         const getAPI = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+        const getCategory = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
         const response = await getAPI.json();
+        const responseCategory = await getCategory.json();
         setResponseAPI(response[pathname.substring(1)]);
+        setCategoryMeals(responseCategory[pathname.substring(1)]);
       }
       if (pathname === '/drinks') {
         const getAPI = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+        const getCategory = await fetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
         const response = await getAPI.json();
+        const responseCategory = await getCategory.json();
         setResponseAPI(response[pathname.substring(1)]);
+        setCategoryDrinks(responseCategory[pathname.substring(1)]);
       }
     }
     fetchData();
-  }, [pathname, setResponseAPI]);
+  }, [
+    pathname,
+    setResponseAPI,
+    categoryMeals,
+    categoryDrinks,
+    setCategoryDrinks,
+    setCategoryMeals,
+  ]);
 
   return (
     <>
@@ -36,9 +58,11 @@ export default function Recipes() {
         profile
         search
       />
+      {pathname === '/drinks' && <ButtonDrinks />}
+      {pathname === '/meals' && <ButtonMeals />}
       {pathname === '/drinks' && responseAPI
         .filter((_response, index) => index < MAX_LENGTH).map((el, index) => (
-          <article data-testid={ `${index}-recipe-card` } key={ el.strDrink }>
+          <article data-testid={ `${index}-recipe-card` } key={ el.IdDrink }>
             <img
               src={ el.strDrinkThumb }
               alt="drink-thumb"
@@ -49,7 +73,7 @@ export default function Recipes() {
         ))}
       {pathname === '/meals' && responseAPI
         .filter((_response, index) => index < MAX_LENGTH).map((el, index) => (
-          <article data-testid={ `${index}-recipe-card` } key={ el.strMeal }>
+          <article data-testid={ `${index}-recipe-card` } key={ el.idMeal }>
             <img
               src={ el.strMealThumb }
               alt="meal-thumb"
