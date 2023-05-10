@@ -2,6 +2,7 @@ import { screen, render, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import LoginProvider from '../providers/LoginProvider';
+import FetchProvider from '../providers/FetchProvider';
 import App from '../App';
 import renderWithRouter from '../helpers/renderWithRouter';
 
@@ -10,7 +11,9 @@ describe('Casos de teste da página de _Login_', () => {
     render(
       <BrowserRouter>
         <LoginProvider>
-          <App />
+          <FetchProvider>
+            <App />
+          </FetchProvider>
         </LoginProvider>
       </BrowserRouter>,
     );
@@ -46,7 +49,9 @@ describe('Casos de teste da página de _Login_', () => {
   it('Testa se o redirecionamento acontece', async () => {
     const { history } = renderWithRouter(
       <LoginProvider>
-        <App />
+        <FetchProvider>
+          <App />
+        </FetchProvider>
       </LoginProvider>,
     );
     const emailInput = screen.getByRole('textbox');

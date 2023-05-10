@@ -3,13 +3,16 @@ import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import LoginProvider from '../providers/LoginProvider';
 import App from '../App';
+import FetchProvider from '../providers/FetchProvider';
 
 describe('Casos de teste da página de _Login_', () => {
   it('Testa inputs da página de login', () => {
     render(
       <BrowserRouter>
         <LoginProvider>
-          <App />
+          <FetchProvider>
+            <App />
+          </FetchProvider>
         </LoginProvider>
       </BrowserRouter>,
     );
