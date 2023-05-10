@@ -4,7 +4,18 @@ import { FetchContext } from '../providers/FetchProvider';
 const MAX_LENGTH = 5;
 
 export default function ButtonMeals() {
-  const { categoryMeals } = useContext(FetchContext);
+  const {
+    setCategoryDrinksAPI,
+    setCategoryMealsAPI,
+    categoryMeals,
+  } = useContext(FetchContext);
+
+  function setTargetCategory({ target }) {
+    const { value } = target;
+    setCategoryMealsAPI(value);
+    setCategoryDrinksAPI('');
+  }
+
   return (
     <div>
       {
@@ -12,6 +23,8 @@ export default function ButtonMeals() {
           <button
             data-testid={ `${category.strCategory}-category-filter` }
             key={ category.strCategory }
+            value={ category.strCategory }
+            onClick={ (event) => setTargetCategory(event) }
           >
             {category.strCategory}
           </button>

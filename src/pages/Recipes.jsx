@@ -16,7 +16,8 @@ export default function Recipes() {
     setCategoryDrinks,
     responseAPI,
     setResponseAPI,
-
+    categoryDrinksAPI,
+    categoryMealsAPI,
   } = useContext(FetchContext);
 
   const location = useLocation();
@@ -58,9 +59,11 @@ export default function Recipes() {
         profile
         search
       />
+
       {pathname === '/drinks' && <ButtonDrinks />}
       {pathname === '/meals' && <ButtonMeals />}
-      {pathname === '/drinks' && responseAPI
+
+      {pathname === '/drinks' && !categoryDrinksAPI && responseAPI
         .filter((_response, index) => index < MAX_LENGTH).map((el, index) => (
           <article data-testid={ `${index}-recipe-card` } key={ el.IdDrink }>
             <img
@@ -71,7 +74,7 @@ export default function Recipes() {
             <span data-testid={ `${index}-card-name` }>{el.strDrink}</span>
           </article>
         ))}
-      {pathname === '/meals' && responseAPI
+      {pathname === '/meals' && !categoryMealsAPI && responseAPI
         .filter((_response, index) => index < MAX_LENGTH).map((el, index) => (
           <article data-testid={ `${index}-recipe-card` } key={ el.idMeal }>
             <img

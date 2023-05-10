@@ -1,23 +1,35 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import mealIcon from '../images/mealIcon.svg';
 import drinkIcon from '../images/drinkIcon.svg';
 import '../styles/footer.css';
+import { FetchContext } from '../providers/FetchProvider';
 
 export default function Footer() {
   const history = useHistory();
+  const { setCategoryDrinksAPI, setCategoryMealsAPI } = useContext(FetchContext);
+
+  function redirectMeals() {
+    history.push('/meals');
+    setCategoryDrinksAPI('');
+  }
+
+  function redirectDrinks() {
+    history.push('/drinks');
+    setCategoryMealsAPI('');
+  }
 
   return (
     <footer data-testid="footer" className="footer">
       <button
         aria-label="Meals"
-        onClick={ () => history.push('/meals') }
+        onClick={ () => redirectMeals() }
       >
         <img src={ mealIcon } alt="meal-icon" data-testid="meals-bottom-btn" />
       </button>
       <button
         aria-label="Drinks"
-        onClick={ () => history.push('/drinks') }
+        onClick={ () => redirectDrinks() }
       >
         <img src={ drinkIcon } alt="drink-icon" data-testid="drinks-bottom-btn" />
       </button>
