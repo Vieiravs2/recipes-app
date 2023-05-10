@@ -23,7 +23,7 @@ export default function RecipesDetails() {
       setRecipe(data[pathname.substring(1, mealsOrDrinks)]);
     }
     fetchDetails();
-  }, [endpoint, id, pathname, mealsOrDrinks, recipe]);
+  }, [endpoint, id, pathname, mealsOrDrinks]);
 
   return (
     <main>
@@ -38,7 +38,41 @@ export default function RecipesDetails() {
                 const ingredientNumber = key.slice('strIngredient'.length);
                 const measureKey = `strMeasure${ingredientNumber}`;
                 const formattedString = `${el[key]} - ${el[measureKey]}`;
-                return <p key={ key }>{formattedString}</p>;
+                return (
+                  <p
+                    key={ key }
+                    data-testid={ `${ingredientNumber - 1}-ingredient-name-and-measure` }
+                  >
+                    {formattedString}
+                  </p>
+                );
+              }
+              return null;
+            })}
+          </div>
+          <p data-testid="instructions">{el.strInstructions}</p>
+          <iframe src={ el.strYoutube } title="recipe-video" data-testid="video" />
+        </div>
+      ))}
+      {pathname.includes('/drinks') && recipe.map((el) => (
+        <div key={ el.strDrink }>
+          <img src={ el.strMealThumb } alt="drink" data-testid="recipe-photo" />
+          <h3 data-testid="recipe-title">{el.strDrink}</h3>
+          <p data-testid="recipe-category">{el.strAlcoholic}</p>
+          <div>
+            {Object.keys(el).map((key) => {
+              if (key.startsWith('strIngredient') && el[key]) {
+                const ingredientNumber = key.slice('strIngredient'.length);
+                const measureKey = `strMeasure${ingredientNumber}`;
+                const formattedString = `${el[key]} - ${el[measureKey]}`;
+                return (
+                  <p
+                    key={ key }
+                    data-testid={ `${ingredientNumber - 1}-ingredient-name-and-measure` }
+                  >
+                    {formattedString}
+                  </p>
+                );
               }
               return null;
             })}
