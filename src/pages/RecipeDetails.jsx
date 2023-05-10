@@ -98,7 +98,7 @@ export default function RecipesDetails() {
       ))}
       { pathname.includes('/meals') && (
         <Swiper
-          spaceBetween={ 30 }
+          spaceBetween={ 10 }
           slidesPerView={ 2 }
           // modules={ [Pagination] }
         >
@@ -107,7 +107,7 @@ export default function RecipesDetails() {
             .map((recommedation, index) => (
               <SwiperSlide key={ recommedation.strDrink }>
                 <div data-testid={ `${index}-recommendation-card` }>
-                  <img src={ recommedation.srtDrinkThumb } alt="drink-thumb" />
+                  <img src={ recommedation.strDrinkThumb } alt="drink-thumb" />
                   <p data-testid={ `${index}-recommendation-title` }>
                     {recommedation.strDrink}
                   </p>
@@ -126,7 +126,7 @@ export default function RecipesDetails() {
             .map((recommedation, index) => (
               <SwiperSlide key={ recommedation.strMeal }>
                 <div data-testid={ `${index}-recommendation-card` }>
-                  <img src={ recommedation.srtMealThumb } alt="drink-thumb" />
+                  <img src={ recommedation.strMealThumb } alt="drink-thumb" />
                   <p data-testid={ `${index}-recommendation-title` }>
                     {recommedation.strMeal}
                   </p>
