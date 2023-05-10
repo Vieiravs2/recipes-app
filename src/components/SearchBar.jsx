@@ -49,7 +49,12 @@ export default function SearchBar() {
       return;
     }
 
-    if (response && response[pathname.substring(1)].length === 1) {
+    if (
+      response
+      && response[pathname.substring(1)]
+      && response[pathname.substring(1)] !== null
+      && response[pathname.substring(1)].length === 1
+    ) {
       history.push(`${pathname}/${response[pathname.substring(1)][0][idProp]}`);
     } else {
       setResponseAPI(response[pathname.substring(1)]);
