@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+import 'swiper/swiper-bundle.min.css';
+import 'swiper/swiper.min.css';
 
 const URL_MEALS_DETAILS = 'https://www.themealdb.com/api/json/v1/1/';
 const URL_DRINKS_DETAILS = 'https://www.thecocktaildb.com/api/json/v1/1/';
 const MEALS_SUBSTRING = 6;
 const DRINKS_SUBSTRING = 7;
+const MAX_RECOMMENDATIONS = 6;
 
 export default function RecipesDetails() {
   const [recipe, setRecipe] = useState([]);
@@ -91,6 +96,45 @@ export default function RecipesDetails() {
           <p data-testid="instructions">{el.strInstructions}</p>
         </div>
       ))}
+      { pathname.includes('/meals') && (
+        <Swiper
+          spaceBetween={ 30 }
+          slidesPerView={ 2 }
+          // modules={ [Pagination] }
+        >
+          {recommedations
+            .filter((_el, index) => index < MAX_RECOMMENDATIONS)
+            .map((recommedation, index) => (
+              <SwiperSlide key={ recommedation.strDrink }>
+                <div data-testid={ `${index}-recommendation-card` }>
+                  <img src={ recommedation.srtDrinkThumb } alt="drink-thumb" />
+                  <p data-testid={ `${index}-recommendation-title` }>
+                    {recommedation.strDrink}
+                  </p>
+                </div>
+              </SwiperSlide>
+            ))}
+        </Swiper>
+      )}
+      { pathname.includes('/drinks') && (
+        <Swiper
+          spaceBetween={ 30 }
+          slidesPerView={ 2 }
+        >
+          {recommedations
+            .filter((_el, index) => index < MAX_RECOMMENDATIONS)
+            .map((recommedation, index) => (
+              <SwiperSlide key={ recommedation.strMeal }>
+                <div data-testid={ `${index}-recommendation-card` }>
+                  <img src={ recommedation.srtMealThumb } alt="drink-thumb" />
+                  <p data-testid={ `${index}-recommendation-title` }>
+                    {recommedation.strMeal}
+                  </p>
+                </div>
+              </SwiperSlide>
+            ))}
+        </Swiper>
+      )}
     </main>
   );
 }
