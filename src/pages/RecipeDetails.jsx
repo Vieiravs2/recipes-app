@@ -23,10 +23,7 @@ export default function RecipesDetails() {
       setRecipe(data[pathname.substring(1, mealsOrDrinks)]);
     }
     fetchDetails();
-    const ingredients = Object.entries(recipe).filter(([key, value]) => key.includes('strIngredient'));
-    console.log(ingredients);
   }, [endpoint, id, pathname, mealsOrDrinks, recipe]);
-
 
   return (
     <main>
@@ -36,35 +33,17 @@ export default function RecipesDetails() {
           <h3 data-testid="recipe-title">{el.strMeal}</h3>
           <p data-testid="recipe-category">{el.strCategory}</p>
           <div>
-            {el.strIngredient1 && el.strMeasure1 && (
-              <p
-                data-testid="1-ingredient-name-and-measure"
-              >
-                {`${el.strIngredient1} - ${el.strMeasure1}`}
-              </p>
-            )}
-            {el.strIngredient2 && el.strMeasure2 && (
-              <p
-                data-testid="2-ingredient-name-and-measure"
-              >
-                {`${el.strIngredient2} - ${el.strMeasure2}`}
-              </p>
-            )}
-            {el.strIngredient3 && el.strMeasure3 && (
-              <p
-                data-testid="3-ingredient-name-and-measure"
-              >
-                {`${el.strIngredient3} - ${el.strMeasure3}`}
-              </p>
-            )}
-            {el.strIngredient4 && el.strMeasure4 && (
-              <p
-                data-testid="4-ingredient-name-and-measure"
-              >
-                {`${el.strIngredient4} - ${el.strMeasure4}`}
-              </p>
-            )}
+            {Object.keys(el).map((key) => {
+              if (key.startsWith('strIngredient') && el[key]) {
+                const ingredientNumber = key.slice('strIngredient'.length);
+                const measureKey = `strMeasure${ingredientNumber}`;
+                const formattedString = `${el[key]} - ${el[measureKey]}`;
+                return <p key={ key }>{formattedString}</p>;
+              }
+              return null;
+            })}
           </div>
+          <p data-testid="instructions">{el.strInstructions}</p>
         </div>
       ))}
     </main>
