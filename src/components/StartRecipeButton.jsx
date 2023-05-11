@@ -1,10 +1,11 @@
 import React from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 
 export default function StartRecipeButton() {
   const { id } = useParams();
   const location = useLocation();
   const { pathname } = location;
+  const history = useHistory();
   const mealOrDrinks = pathname.includes('/meals') ? 'meals' : 'drinks';
 
   let doneRecipesStoraged = JSON.parse(localStorage.getItem('doneRecipes'));
@@ -36,6 +37,7 @@ export default function StartRecipeButton() {
         type="button"
         data-testid="start-recipe-btn"
         style={ { position: 'fixed', bottom: 0, zIndex: 1 } }
+        onClick={ () => history.push(`/${mealOrDrinks}/${id}/in-progress`) }
       >
         {recipeIsInProgress ? 'Continue Recipe' : 'Start Recipe' }
       </button>
