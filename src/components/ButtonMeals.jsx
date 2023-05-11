@@ -1,19 +1,35 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { FetchContext } from '../providers/FetchProvider';
 
 const MAX_LENGTH = 5;
 
 export default function ButtonMeals() {
+  const location = useLocation();
+  const { pathname } = location;
   const {
     setCategoryDrinksAPI,
-    setCategoryMealsAPI,
     categoryMeals,
+    setCategoryMealsAPI,
+    categoryMealsAPI,
+    setCategoryReturnFromAPI,
+    setHaveCategory,
   } = useContext(FetchContext);
+
+  useEffect(() => {
+    async function fetchCategoryData() {
+      const getAPI = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoryMealsAPI}`);
+      const response = await getAPI.json();
+      setCategoryReturnFromAPI(response[pathname.substring(1)]);
+    }
+    fetchCategoryData();
+  }, [categoryMealsAPI, pathname, setCategoryReturnFromAPI]);
 
   function setTargetCategory({ target }) {
     const { value } = target;
     setCategoryMealsAPI(value);
     setCategoryDrinksAPI('');
+    setHaveCategory(true);
   }
 
   return (
@@ -30,6 +46,12 @@ export default function ButtonMeals() {
           </button>
         ))
       }
+      <button
+        data-testid="All-category-filter"
+        onClick={ () => setHaveCategory(false) }
+      >
+        Limpar Filtro
+      </button>
     </div>
   );
 }

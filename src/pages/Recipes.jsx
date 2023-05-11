@@ -10,14 +10,12 @@ const MAX_LENGTH = 12;
 
 export default function Recipes() {
   const {
-    categoryMeals,
     setCategoryMeals,
-    categoryDrinks,
     setCategoryDrinks,
     responseAPI,
     setResponseAPI,
-    categoryDrinksAPI,
-    categoryMealsAPI,
+    haveCategory,
+    categoryReturnFromAPI,
   } = useContext(FetchContext);
 
   const location = useLocation();
@@ -46,8 +44,6 @@ export default function Recipes() {
   }, [
     pathname,
     setResponseAPI,
-    categoryMeals,
-    categoryDrinks,
     setCategoryDrinks,
     setCategoryMeals,
   ]);
@@ -63,7 +59,7 @@ export default function Recipes() {
       {pathname === '/drinks' && <ButtonDrinks />}
       {pathname === '/meals' && <ButtonMeals />}
 
-      {pathname === '/drinks' && !categoryDrinksAPI && responseAPI
+      {pathname === '/drinks' && !haveCategory && responseAPI
         .filter((_response, index) => index < MAX_LENGTH).map((el, index) => (
           <article data-testid={ `${index}-recipe-card` } key={ el.IdDrink }>
             <img
@@ -74,7 +70,29 @@ export default function Recipes() {
             <span data-testid={ `${index}-card-name` }>{el.strDrink}</span>
           </article>
         ))}
-      {pathname === '/meals' && !categoryMealsAPI && responseAPI
+      {pathname === '/drinks' && haveCategory && categoryReturnFromAPI
+        .filter((_response, index) => index < MAX_LENGTH).map((el, index) => (
+          <article data-testid={ `${index}-recipe-card` } key={ el.IdDrink }>
+            <img
+              src={ el.strDrinkThumb }
+              alt="drink-thumb"
+              data-testid={ `${index}-card-img` }
+            />
+            <span data-testid={ `${index}-card-name` }>{el.strDrink}</span>
+          </article>
+        ))}
+      {pathname === '/meals' && !haveCategory && responseAPI
+        .filter((_response, index) => index < MAX_LENGTH).map((el, index) => (
+          <article data-testid={ `${index}-recipe-card` } key={ el.idMeal }>
+            <img
+              src={ el.strMealThumb }
+              alt="meal-thumb"
+              data-testid={ `${index}-card-img` }
+            />
+            <span data-testid={ `${index}-card-name` }>{el.strMeal}</span>
+          </article>
+        ))}
+      {pathname === '/meals' && haveCategory && categoryReturnFromAPI
         .filter((_response, index) => index < MAX_LENGTH).map((el, index) => (
           <article data-testid={ `${index}-recipe-card` } key={ el.idMeal }>
             <img

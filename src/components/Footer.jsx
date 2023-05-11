@@ -7,16 +7,22 @@ import { FetchContext } from '../providers/FetchProvider';
 
 export default function Footer() {
   const history = useHistory();
-  const { setCategoryDrinksAPI, setCategoryMealsAPI } = useContext(FetchContext);
+  const {
+    setCategoryDrinksAPI,
+    setCategoryMealsAPI,
+    setHaveCategory,
+  } = useContext(FetchContext);
 
   function redirectMeals() {
     history.push('/meals');
     setCategoryDrinksAPI('');
+    setHaveCategory(false);
   }
 
   function redirectDrinks() {
     history.push('/drinks');
     setCategoryMealsAPI('');
+    setHaveCategory(false);
   }
 
   return (

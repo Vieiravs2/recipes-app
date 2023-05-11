@@ -2,13 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { FetchContext } from '../providers/FetchProvider';
 
 export default function Profile() {
   const user = JSON.parse(localStorage.getItem('user'));
+  const { setHaveCategory } = useContext(FetchContext);
 
   const handlerLogout = () => {
     localStorage.clear();
     window.location.href = '/';
+    setHaveCategory(false);
   };
   return (
     <>
