@@ -9,7 +9,7 @@ const mockResponse = {
   meals: [
     {
       idMeal: '1',
-      strMeal: 'Frango',
+      strMeal: 'Chicken',
     },
   ],
 };
@@ -46,8 +46,8 @@ describe('Testes no SearchBar', () => {
     const searchIcon = screen.getByRole('img', { name: /search-icon/i });
     userEvent.click(searchIcon);
     const searchInput = screen.getByTestId(serchInput);
-    userEvent.type(searchInput, 'Frango');
-    expect(searchInput.value).toBe('Frango');
+    userEvent.type(searchInput, 'chicken');
+    expect(searchInput.value).toBe('chicken');
   });
   test('Os botões de opção são selecionados corretamente', () => {
     renderWithRouter(
@@ -89,14 +89,14 @@ describe('Testes no SearchBar', () => {
     const searchIcon = screen.getByRole('img', { name: /search-icon/i });
     userEvent.click(searchIcon);
     const searchInput = screen.getByTestId(serchInput);
-    userEvent.type(searchInput, 'Frango');
+    userEvent.type(searchInput, 'chicken');
     const ingredientOption = screen.getByRole('radio', { name: /ingredient/i });
     userEvent.click(ingredientOption);
     const searchButton = screen.getByRole('button', { name: /buscar/i });
     userEvent.click(searchButton);
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
-        'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=Frango',
+        'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=chicken',
       );
     });
   });
@@ -114,14 +114,14 @@ describe('Testes no SearchBar', () => {
     const searchIcon = screen.getByRole('img', { name: /search-icon/i });
     userEvent.click(searchIcon);
     const searchInput = screen.getByTestId(serchInput);
-    userEvent.type(searchInput, 'Frango');
+    userEvent.type(searchInput, 'chicken');
     const nameOption = screen.getByRole('radio', { name: /name/i });
     userEvent.click(nameOption);
     const searchButton = screen.getByRole('button', { name: /buscar/i });
     userEvent.click(searchButton);
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
-        'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=Frango',
+        'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=chicken',
       );
     });
   });
@@ -172,5 +172,70 @@ describe('Testes no SearchBar', () => {
 
     expect(alertSpy).toHaveBeenCalledWith('Your search must have only 1 (one) character');
     alertSpy.mockRestore();
+  });
+
+  test('Redireciona para pagina pesquisa e retorna apenas uma refeição', async () => {
+    const response = {
+      meals: [
+        { idMeal: '52772' },
+      ],
+    };
+    global.fetch = jest.fn(() => Promise.resolve({
+      json: () => Promise.resolve(response),
+    }));
+
+    const { history } = renderWithRouter(
+      <LoginProvider>
+        <FetchProvider>
+          <Recipes />
+        </FetchProvider>
+      </LoginProvider>,
+      '/meals',
+    );
+
+    const searchIcon = screen.getByRole('img', { name: /search-icon/i });
+    userEvent.click(searchIcon);
+    const searchInput = screen.getByTestId(serchInput);
+    userEvent.type(searchInput, 'Brown Stew Chicken');
+    const radioIngredient = screen.getByRole('radio', { name: /ingredient/i });
+    userEvent.click(radioIngredient);
+    const searchButton = screen.getByRole('button', { name: /buscar/i });
+    userEvent.click(searchButton);
+    await waitFor(() => {
+      expect(history.location.pathname).toBe('/meals/52772');
+    });
+  });
+
+  test('Redireciona para pagina pesquisa e retorna apenas uma drink', async () => {
+    const resposta = {
+      drinks: [
+        { idDrink: '11007' },
+      ],
+    };
+
+    global.fetch = jest.fn(() => Promise.resolve({
+      json: () => Promise.resolve(resposta),
+    }));
+
+    const { history } = renderWithRouter(
+      <LoginProvider>
+        <FetchProvider>
+          <Recipes />
+        </FetchProvider>
+      </LoginProvider>,
+      '/drinks',
+    );
+
+    const searchIcon = screen.getByRole('img', { name: /search-icon/i });
+    userEvent.click(searchIcon);
+    const searchInput = screen.getByTestId(serchInput);
+    userEvent.type(searchInput, 'Dry Martin');
+    const radioIngredient = screen.getByRole('radio', { name: /ingredient/i });
+    userEvent.click(radioIngredient);
+    const searchButton = screen.getByRole('button', { name: /buscar/i });
+    userEvent.click(searchButton);
+    await waitFor(() => {
+      expect(history.location.pathname).toBe('/drinks/11007');
+    });
   });
 });
