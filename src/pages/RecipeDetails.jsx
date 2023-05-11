@@ -5,6 +5,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.min.css';
 import 'swiper/swiper.min.css';
 import StartRecipeButton from '../components/StartRecipeButton';
+import FavoriteButton from '../components/FavoriteButton';
+import ShareButton from '../components/ShareButton';
 
 const URL_MEALS_DETAILS = 'https://www.themealdb.com/api/json/v1/1/';
 const URL_DRINKS_DETAILS = 'https://www.thecocktaildb.com/api/json/v1/1/';
@@ -47,6 +49,8 @@ export default function RecipesDetails() {
       <main>
         {pathname.includes('/meals') && recipe.map((el) => (
           <div key={ el.strMeal }>
+            <ShareButton />
+            <FavoriteButton />
             <img src={ el.strMealThumb } alt="meal" data-testid="recipe-photo" />
             <h3 data-testid="recipe-title">{el.strMeal}</h3>
             <p data-testid="recipe-category">{el.strCategory}</p>
@@ -80,6 +84,8 @@ export default function RecipesDetails() {
         ))}
         {pathname.includes('/drinks') && recipe.map((el) => (
           <div key={ el.strDrink }>
+            <ShareButton />
+            <FavoriteButton />
             <img src={ el.strMealThumb } alt="drink" data-testid="recipe-photo" />
             <h3 data-testid="recipe-title">{el.strDrink}</h3>
             <p data-testid="recipe-category">{el.strAlcoholic}</p>
