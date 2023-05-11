@@ -67,7 +67,11 @@ export default function RecipesDetails() {
             })}
           </div>
           <p data-testid="instructions">{el.strInstructions}</p>
-          <iframe src={ el.strYoutube } title="recipe-video" data-testid="video" />
+          <iframe
+            src={ el.strYoutube.replace('watch?v=', 'embed/') }
+            title="recipe-video"
+            data-testid="video"
+          />
         </div>
       ))}
       {pathname.includes('/drinks') && recipe.map((el) => (
