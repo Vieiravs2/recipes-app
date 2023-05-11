@@ -60,7 +60,7 @@ describe('Casos de teste da página de _Login_', () => {
     userEvent.type(emailInput, 'email@test.com');
     userEvent.type(passwordInput, '1234567');
     userEvent.click(btn);
-    const profileBtn = screen.getByRole('img', { name: /profile/i });
+    const profileBtn = screen.getByTestId('btn-profile');
     userEvent.click(profileBtn);
     expect(history.location.pathname).toBe('/profile');
   });
