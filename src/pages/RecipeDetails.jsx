@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/swiper-bundle.min.css';
 import 'swiper/swiper.min.css';
+import StartRecipeButton from '../components/StartRecipeButton';
 
 const URL_MEALS_DETAILS = 'https://www.themealdb.com/api/json/v1/1/';
 const URL_DRINKS_DETAILS = 'https://www.thecocktaildb.com/api/json/v1/1/';
@@ -42,103 +43,111 @@ export default function RecipesDetails() {
   console.log(recommedations);
 
   return (
-    <main>
-      {pathname.includes('/meals') && recipe.map((el) => (
-        <div key={ el.strMeal }>
-          <img src={ el.strMealThumb } alt="meal" data-testid="recipe-photo" />
-          <h3 data-testid="recipe-title">{el.strMeal}</h3>
-          <p data-testid="recipe-category">{el.strCategory}</p>
-          <div>
-            {Object.keys(el).map((key) => {
-              if (key.startsWith('strIngredient') && el[key]) {
-                const ingredientNumber = key.slice('strIngredient'.length);
-                const measureKey = `strMeasure${ingredientNumber}`;
-                const formattedString = `${el[key]} - ${el[measureKey]}`;
-                return (
-                  <p
-                    key={ key }
-                    data-testid={ `${ingredientNumber - 1}-ingredient-name-and-measure` }
-                  >
-                    {formattedString}
-                  </p>
-                );
-              }
-              return null;
-            })}
+    <>
+      <main>
+        {pathname.includes('/meals') && recipe.map((el) => (
+          <div key={ el.strMeal }>
+            <img src={ el.strMealThumb } alt="meal" data-testid="recipe-photo" />
+            <h3 data-testid="recipe-title">{el.strMeal}</h3>
+            <p data-testid="recipe-category">{el.strCategory}</p>
+            <div>
+              {Object.keys(el).map((key) => {
+                if (key.startsWith('strIngredient') && el[key]) {
+                  const ingredientNumber = key.slice('strIngredient'.length);
+                  const measureKey = `strMeasure${ingredientNumber}`;
+                  const formattedString = `${el[key]} - ${el[measureKey]}`;
+                  return (
+                    <p
+                      key={ key }
+                      data-testid={
+                        `${ingredientNumber - 1}-ingredient-name-and-measure`
+                      }
+                    >
+                      {formattedString}
+                    </p>
+                  );
+                }
+                return null;
+              })}
+            </div>
+            <p data-testid="instructions">{el.strInstructions}</p>
+            <iframe
+              src={ el.strYoutube.replace('watch?v=', 'embed/') }
+              title="recipe-video"
+              data-testid="video"
+            />
           </div>
-          <p data-testid="instructions">{el.strInstructions}</p>
-          <iframe
-            src={ el.strYoutube.replace('watch?v=', 'embed/') }
-            title="recipe-video"
-            data-testid="video"
-          />
-        </div>
-      ))}
-      {pathname.includes('/drinks') && recipe.map((el) => (
-        <div key={ el.strDrink }>
-          <img src={ el.strMealThumb } alt="drink" data-testid="recipe-photo" />
-          <h3 data-testid="recipe-title">{el.strDrink}</h3>
-          <p data-testid="recipe-category">{el.strAlcoholic}</p>
-          <div>
-            {Object.keys(el).map((key) => {
-              if (key.startsWith('strIngredient') && el[key]) {
-                const ingredientNumber = key.slice('strIngredient'.length);
-                const measureKey = `strMeasure${ingredientNumber}`;
-                const formattedString = `${el[key]} - ${el[measureKey]}`;
-                return (
-                  <p
-                    key={ key }
-                    data-testid={ `${ingredientNumber - 1}-ingredient-name-and-measure` }
-                  >
-                    {formattedString}
-                  </p>
-                );
-              }
-              return null;
-            })}
+        ))}
+        {pathname.includes('/drinks') && recipe.map((el) => (
+          <div key={ el.strDrink }>
+            <img src={ el.strMealThumb } alt="drink" data-testid="recipe-photo" />
+            <h3 data-testid="recipe-title">{el.strDrink}</h3>
+            <p data-testid="recipe-category">{el.strAlcoholic}</p>
+            <div>
+              {Object.keys(el).map((key) => {
+                if (key.startsWith('strIngredient') && el[key]) {
+                  const ingredientNumber = key.slice('strIngredient'.length);
+                  const measureKey = `strMeasure${ingredientNumber}`;
+                  const formattedString = `${el[key]} - ${el[measureKey]}`;
+                  return (
+                    <p
+                      key={ key }
+                      data-testid={
+                        `${ingredientNumber - 1}-ingredient-name-and-measure`
+                      }
+                    >
+                      {formattedString}
+                    </p>
+                  );
+                }
+                return null;
+              })}
+            </div>
+            <p data-testid="instructions">{el.strInstructions}</p>
           </div>
-          <p data-testid="instructions">{el.strInstructions}</p>
-        </div>
-      ))}
-      { pathname.includes('/meals') && (
-        <Swiper
-          spaceBetween={ 10 }
-          slidesPerView={ 2 }
-          // modules={ [Pagination] }
-        >
-          {recommedations
-            .filter((_el, index) => index < MAX_RECOMMENDATIONS)
-            .map((recommedation, index) => (
-              <SwiperSlide key={ recommedation.strDrink }>
-                <div data-testid={ `${index}-recommendation-card` }>
-                  <img src={ recommedation.strDrinkThumb } alt="drink-thumb" />
-                  <p data-testid={ `${index}-recommendation-title` }>
-                    {recommedation.strDrink}
-                  </p>
-                </div>
-              </SwiperSlide>
-            ))}
-        </Swiper>
-      )}
-      { pathname.includes('/drinks') && (
-        <Swiper
-          spaceBetween={ 30 }
-          slidesPerView={ 2 }
-        >
-          {recommedations
-            .filter((_el, index) => index < MAX_RECOMMENDATIONS)
-            .map((recommedation, index) => (
-              <SwiperSlide key={ recommedation.strMeal }>
-                <div data-testid={ `${index}-recommendation-card` }>
-                  <img src={ recommedation.strMealThumb } alt="drink-thumb" />
-                  <p data-testid={ `${index}-recommendation-title` }>
-                    {recommedation.strMeal}
-                  </p>
-                </div>
-              </SwiperSlide>
-            ))}
-        </Swiper>
-      )}
-    </main>
+        ))}
+        {pathname.includes('/meals') && (
+          <Swiper
+            spaceBetween={ 10 }
+            slidesPerView={ 2 }
+          >
+            {recommedations
+              .filter((_el, index) => index < MAX_RECOMMENDATIONS)
+              .map((recommedation, index) => (
+                <SwiperSlide key={ recommedation.strDrink }>
+                  <div data-testid={ `${index}-recommendation-card` }>
+                    <img src={ recommedation.strDrinkThumb } alt="drink-thumb" />
+                    <p data-testid={ `${index}-recommendation-title` }>
+                      {recommedation.strDrink}
+                    </p>
+                  </div>
+                </SwiperSlide>
+              ))}
+          </Swiper>
+        )}
+        {pathname.includes('/drinks') && (
+          <Swiper
+            spaceBetween={ 30 }
+            slidesPerView={ 2 }
+          >
+            {recommedations
+              .filter((_el, index) => index < MAX_RECOMMENDATIONS)
+              .map((recommedation, index) => (
+                <SwiperSlide key={ recommedation.strMeal }>
+                  <div data-testid={ `${index}-recommendation-card` }>
+                    <img src={ recommedation.strMealThumb } alt="drink-thumb" />
+                    <p data-testid={ `${index}-recommendation-title` }>
+                      {recommedation.strMeal}
+                    </p>
+                  </div>
+                </SwiperSlide>
+              ))}
+          </Swiper>
+        )}
+      </main>
+      <footer>
+        <StartRecipeButton />
+      </footer>
+    </>
   );
 }
