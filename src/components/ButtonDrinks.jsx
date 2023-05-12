@@ -18,9 +18,11 @@ export default function ButtonDrinks() {
 
   useEffect(() => {
     async function fetchCategoryData() {
-      const getAPI = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${categoryDrinksAPI}`);
-      const response = await getAPI.json();
-      setCategoryReturnFromAPI(response[pathname.substring(1)]);
+      if (categoryDrinksAPI) {
+        const getAPI = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${categoryDrinksAPI}`);
+        const response = await getAPI.json();
+        setCategoryReturnFromAPI(response[pathname.substring(1)]);
+      }
     }
     fetchCategoryData();
   }, [categoryDrinksAPI, pathname, setCategoryReturnFromAPI]);

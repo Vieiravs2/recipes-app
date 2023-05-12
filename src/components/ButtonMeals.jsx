@@ -18,9 +18,11 @@ export default function ButtonMeals() {
 
   useEffect(() => {
     async function fetchCategoryData() {
-      const getAPI = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoryMealsAPI}`);
-      const response = await getAPI.json();
-      setCategoryReturnFromAPI(response[pathname.substring(1)]);
+      if (categoryMealsAPI) {
+        const getAPI = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoryMealsAPI}`);
+        const response = await getAPI.json();
+        setCategoryReturnFromAPI(response[pathname.substring(1)]);
+      }
     }
     fetchCategoryData();
   }, [categoryMealsAPI, pathname, setCategoryReturnFromAPI]);
