@@ -18,6 +18,5 @@ test('Verifique se a página de comida é renderizada', () => {
   );
 
   const profileEl = screen.getByTestId('profile-component');
-
   expect(profileEl).toBeInTheDocument();
 });
