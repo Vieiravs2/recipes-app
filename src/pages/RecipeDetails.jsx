@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -7,6 +7,7 @@ import 'swiper/swiper.min.css';
 import StartRecipeButton from '../components/StartRecipeButton';
 import FavoriteButton from '../components/FavoriteButton';
 import ShareButton from '../components/ShareButton';
+import { FetchContext } from '../providers/FetchProvider';
 
 const URL_MEALS_DETAILS = 'https://www.themealdb.com/api/json/v1/1/';
 const URL_DRINKS_DETAILS = 'https://www.thecocktaildb.com/api/json/v1/1/';
@@ -15,7 +16,7 @@ const DRINKS_SUBSTRING = 7;
 const MAX_RECOMMENDATIONS = 6;
 
 export default function RecipesDetails() {
-  const [recipe, setRecipe] = useState([]);
+  const { setRecipe, recipe } = useContext(FetchContext);
   const [recommedations, setRecommendations] = useState([]);
 
   const history = useHistory();
@@ -40,9 +41,10 @@ export default function RecipesDetails() {
       setRecipe(dataDet[pathname.substring(1, mealsOrDrinks)]);
     }
     fetchDetails();
-  }, [endpoint, id, pathname, mealsOrDrinks, invertedEndpoint, invertPathname]);
+  }, [endpoint, id, pathname, mealsOrDrinks,
+    invertedEndpoint, invertPathname, setRecipe]);
 
-  console.log(recommedations);
+  // console.log(recommedations);
 
   return (
     <>
@@ -86,7 +88,7 @@ export default function RecipesDetails() {
           <div key={ el.strDrink }>
             <ShareButton />
             <FavoriteButton />
-            <img src={ el.strMealThumb } alt="drink" data-testid="recipe-photo" />
+            <img src={ el.strDrinkThumb } alt="drink" data-testid="recipe-photo" />
             <h3 data-testid="recipe-title">{el.strDrink}</h3>
             <p data-testid="recipe-category">{el.strAlcoholic}</p>
             <div>
