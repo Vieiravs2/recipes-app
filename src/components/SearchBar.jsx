@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import { FetchContext } from '../providers/FetchProvider';
 
 const URL_MEALS = 'https://www.themealdb.com/api/json/v1/1/';
 const URL_DRINKS = 'https://www.thecocktaildb.com/api/json/v1/1/';
