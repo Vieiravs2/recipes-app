@@ -21,7 +21,11 @@ export default function Header({ title, profile, search }) {
   return (
     <div>
       <h1 data-testid="page-title">{title}</h1>
-      <button onClick={ redirectProfile } aria-label="Abrir perfil">
+      <button
+        data-testid="btn-profile"
+        onClick={ redirectProfile }
+        aria-label="Abrir perfil"
+      >
         {profile && (
           <img
             src={ profileIcon }

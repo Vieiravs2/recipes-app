@@ -11,6 +11,7 @@ function FetchProvider({ children }) {
   const [categoryMealsAPI, setCategoryMealsAPI] = useState('');
   const [categoryReturnFromAPI, setCategoryReturnFromAPI] = useState('');
   const [haveCategory, setHaveCategory] = useState(false);
+  const [recipe, setRecipe] = useState([]);
 
   const values = useMemo(() => ({
     categoryMeals,
@@ -27,6 +28,8 @@ function FetchProvider({ children }) {
     setHaveCategory,
     categoryReturnFromAPI,
     setCategoryReturnFromAPI,
+    recipe,
+    setRecipe,
   }), [
     categoryMeals,
     responseAPI,
@@ -41,6 +44,8 @@ function FetchProvider({ children }) {
     setHaveCategory,
     categoryReturnFromAPI,
     setCategoryReturnFromAPI,
+    recipe,
+    setRecipe,
   ]);
 
   return (
