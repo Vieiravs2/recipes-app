@@ -29,9 +29,15 @@ export default function ButtonMeals() {
 
   function setTargetCategory({ target }) {
     const { value } = target;
-    setCategoryMealsAPI(value);
-    setCategoryDrinksAPI('');
-    setHaveCategory(true);
+    if (categoryMealsAPI === value) {
+      setCategoryMealsAPI('');
+      setCategoryDrinksAPI('');
+      setHaveCategory(false);
+    } else {
+      setCategoryMealsAPI(value);
+      setCategoryDrinksAPI('');
+      setHaveCategory(true);
+    }
   }
 
   return (
