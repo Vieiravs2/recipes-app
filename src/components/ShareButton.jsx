@@ -17,6 +17,7 @@ function ShareButton() {
     setTimeout(() => setLinkCopied(false), TWO_SECONDS);
     setLinkCopied(true);
   };
+
   return (
     <>
       <button

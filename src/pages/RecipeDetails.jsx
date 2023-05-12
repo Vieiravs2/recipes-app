@@ -49,9 +49,9 @@ export default function RecipesDetails() {
   return (
     <>
       <main>
-        {pathname.includes('/meals') && recipe.map((el) => (
+        {pathname.includes('/meals') && recipe.map((el, index) => (
           <div key={ el.strMeal }>
-            <ShareButton />
+            <ShareButton index={ index } />
             <FavoriteButton />
             <img src={ el.strMealThumb } alt="meal" data-testid="recipe-photo" />
             <h3 data-testid="recipe-title">{el.strMeal}</h3>
@@ -84,9 +84,9 @@ export default function RecipesDetails() {
             />
           </div>
         ))}
-        {pathname.includes('/drinks') && recipe.map((el) => (
+        {pathname.includes('/drinks') && recipe.map((el, index) => (
           <div key={ el.strDrink }>
-            <ShareButton />
+            <ShareButton index={ index } />
             <FavoriteButton />
             <img src={ el.strDrinkThumb } alt="drink" data-testid="recipe-photo" />
             <h3 data-testid="recipe-title">{el.strDrink}</h3>
