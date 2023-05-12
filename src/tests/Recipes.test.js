@@ -7,12 +7,9 @@ import FetchProvider from '../providers/FetchProvider';
 import { drinks } from '../../cypress/mocks/drinks';
 import { meals } from '../../cypress/mocks/meals';
 import { mealCategories } from '../../cypress/mocks/mealCategories';
+import { drinkCategories } from '../../cypress/mocks/drinkCategories';
 
 describe('Testa a página de receitas', () => {
-//   jest.spyOn(global, 'fetch').mockResolvedValue({
-//     json: jest.fn().mockResolvedValue(mealCategories),
-//   });
-
   it('Testa se a página de receitas é renderizada', async () => {
     renderWithRouter(
       <FetchProvider>
@@ -23,9 +20,11 @@ describe('Testa a página de receitas', () => {
       '/meals',
     );
 
-    screen.debug();
-
-    const beefButton = screen.getByRole('button', { name: /beef/i });
-    expect(beefButton).toBeInTheDocument();
+    const allButton = screen.getByRole('button', { name: /all/i });
+    expect(allButton).toBeInTheDocument();
+    const mealButton = screen.getByRole('button', { name: /food/i });
+    expect(mealButton).toBeInTheDocument();
+    const drinkButton = screen.getByRole('button', { name: /drinks/i });
+    expect(drinkButton).toBeInTheDocument();
   });
 });
