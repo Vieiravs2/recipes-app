@@ -8,15 +8,18 @@ import { FetchContext } from '../providers/FetchProvider';
 function FavoriteButton() {
   const { recipe } = useContext(FetchContext);
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
+  const [isFavorite, setIsFavorite] = useState(false);
   const { id } = useParams();
-  console.log(recipe);
 
   useEffect(() => {
     const getRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
     setFavoriteRecipes(getRecipes);
   }, []);
 
-  const isFavorite = favoriteRecipes.some((favRecipe) => favRecipe.id === id);
+  useEffect(() => {
+    setIsFavorite(favoriteRecipes.some((favRecipe) => favRecipe.id === id));
+  }, [id, favoriteRecipes]);
+
   const addFavorite = () => {
     const getRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
     const recipeToBeStoraged = [
@@ -30,19 +33,28 @@ function FavoriteButton() {
         image: recipe[0].strMealThumb || recipe[0].strDrinkThumb,
       }];
     localStorage.setItem('favoriteRecipes', JSON.stringify(recipeToBeStoraged));
+    setIsFavorite(true);
+  };
+
+  const dellFavorite = () => {
+    const getRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+    const recipeToBeStoraged = getRecipes.filter(({ id: idRecipe }) => id !== idRecipe);
+    localStorage.setItem('favoriteRecipes', JSON.stringify(recipeToBeStoraged));
+    setIsFavorite(false);
   };
 
   return (
     isFavorite ? (
-      <button data-testid="favorite-btn">
-        <img src={ blackHeartIcon } alt="favorite-recipe" />
+      <button
+        onClick={ () => dellFavorite() }
+      >
+        <img data-testid="favorite-btn" src={ blackHeartIcon } alt="favorite-recipe" />
       </button>
     ) : (
       <button
-        data-testid="favorite-btn"
         onClick={ () => addFavorite() }
       >
-        <img src={ whiteHeartIcon } alt="" />
+        <img data-testid="favorite-btn" src={ whiteHeartIcon } alt="" />
       </button>
     )
   );

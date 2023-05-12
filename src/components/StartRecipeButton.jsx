@@ -32,7 +32,7 @@ export default function StartRecipeButton() {
     .some((inProgressRecipeId) => inProgressRecipeId === id);
 
   return (
-    !recipeIsDone && (
+    !recipeIsDone && !pathname.includes('progress') && (
       <button
         type="button"
         data-testid="start-recipe-btn"

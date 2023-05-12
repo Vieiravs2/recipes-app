@@ -1,16 +1,13 @@
-import React, { useContext, useEffect } from 'react';
-import { FetchContext } from '../providers/FetchProvider';
+import React from 'react';
+import RecipesDetails from './RecipeDetails';
+import FinishRecipeButton from '../components/FinishRecipeButton';
 
 export default function RecipeInProgress() {
-  const { recipe } = useContext(FetchContext);
-
-  useEffect(() => {
-    console.log(recipe);
-  }, [recipe]);
-
   return (
-    <div className="main_recipe_progress">
-      <h1>{recipe[0]?.strMeal}</h1>
-    </div>
+    // <div>RecipeInProgress</div>
+    <>
+      <RecipesDetails />
+      <FinishRecipeButton />
+    </>
   );
 }
