@@ -1,19 +1,37 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 import { FetchContext } from '../providers/FetchProvider';
 
 const MAX_LENGTH = 5;
 
 export default function ButtonDrinks() {
+  const location = useLocation();
+  const { pathname } = location;
   const {
     setCategoryDrinksAPI,
     categoryDrinks,
+    categoryDrinksAPI,
     setCategoryMealsAPI,
+    setCategoryReturnFromAPI,
+    setHaveCategory,
   } = useContext(FetchContext);
+
+  useEffect(() => {
+    async function fetchCategoryData() {
+      if (categoryDrinksAPI) {
+        const getAPI = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${categoryDrinksAPI}`);
+        const response = await getAPI.json();
+        setCategoryReturnFromAPI(response[pathname.substring(1)]);
+      }
+    }
+    fetchCategoryData();
+  }, [categoryDrinksAPI, pathname, setCategoryReturnFromAPI]);
 
   function setTargetCategory({ target }) {
     const { value } = target;
     setCategoryDrinksAPI(value);
     setCategoryMealsAPI('');
+    setHaveCategory(true);
   }
 
   return (
@@ -30,6 +48,12 @@ export default function ButtonDrinks() {
           </button>
         ))
       }
+      <button
+        data-testid="All-category-filter"
+        onClick={ () => setHaveCategory(false) }
+      >
+        Limpar Filtro
+      </button>
     </div>
   );
 }

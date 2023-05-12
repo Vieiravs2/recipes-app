@@ -8,14 +8,76 @@ import ButtonMeals from '../components/ButtonMeals';
 
 const MAX_LENGTH = 12;
 
+function renderDrinkRecipes(responseAPI, haveCategory, categoryReturnFromAPI) {
+  if (haveCategory && Array.isArray(categoryReturnFromAPI)) {
+    return categoryReturnFromAPI
+      .filter((_response, index) => index < MAX_LENGTH)
+      .map((el, index) => (
+        <article data-testid={ `${index}-recipe-card` } key={ el.IdDrink }>
+          <img
+            src={ el.strDrinkThumb }
+            alt="drink-thumb"
+            data-testid={ `${index}-card-img` }
+          />
+          <span data-testid={ `${index}-card-name` }>{el.strDrink}</span>
+        </article>
+      ));
+  } if (!haveCategory && Array.isArray(responseAPI)) {
+    return responseAPI
+      .filter((_response, index) => index < MAX_LENGTH)
+      .map((el, index) => (
+        <article data-testid={ `${index}-recipe-card` } key={ el.IdDrink }>
+          <img
+            src={ el.strDrinkThumb }
+            alt="drink-thumb"
+            data-testid={ `${index}-card-img` }
+          />
+          <span data-testid={ `${index}-card-name` }>{el.strDrink}</span>
+        </article>
+      ));
+  }
+  return null;
+}
+
+function renderMealRecipes(responseAPI, haveCategory, categoryReturnFromAPI) {
+  if (haveCategory && Array.isArray(categoryReturnFromAPI)) {
+    return categoryReturnFromAPI
+      .filter((_response, index) => index < MAX_LENGTH)
+      .map((el, index) => (
+        <article data-testid={ `${index}-recipe-card` } key={ el.idMeal }>
+          <img
+            src={ el.strMealThumb }
+            alt="meal-thumb"
+            data-testid={ `${index}-card-img` }
+          />
+          <span data-testid={ `${index}-card-name` }>{el.strMeal}</span>
+        </article>
+      ));
+  } if (!haveCategory && Array.isArray(responseAPI)) {
+    return responseAPI
+      .filter((_response, index) => index < MAX_LENGTH)
+      .map((el, index) => (
+        <article data-testid={ `${index}-recipe-card` } key={ el.idMeal }>
+          <img
+            src={ el.strMealThumb }
+            alt="meal-thumb"
+            data-testid={ `${index}-card-img` }
+          />
+          <span data-testid={ `${index}-card-name` }>{el.strMeal}</span>
+        </article>
+      ));
+  }
+  return null;
+}
+
 export default function Recipes() {
   const {
     setCategoryMeals,
     setCategoryDrinks,
     responseAPI,
     setResponseAPI,
-    categoryDrinksAPI,
-    categoryMealsAPI,
+    haveCategory,
+    categoryReturnFromAPI,
   } = useContext(FetchContext);
 
   const location = useLocation();
@@ -59,28 +121,12 @@ export default function Recipes() {
       {pathname === '/drinks' && <ButtonDrinks />}
       {pathname === '/meals' && <ButtonMeals />}
 
-      {pathname === '/drinks' && !categoryDrinksAPI && responseAPI
-        .filter((_response, index) => index < MAX_LENGTH).map((el, index) => (
-          <article data-testid={ `${index}-recipe-card` } key={ el.IdDrink }>
-            <img
-              src={ el.strDrinkThumb }
-              alt="drink-thumb"
-              data-testid={ `${index}-card-img` }
-            />
-            <span data-testid={ `${index}-card-name` }>{el.strDrink}</span>
-          </article>
-        ))}
-      {pathname === '/meals' && !categoryMealsAPI && responseAPI
-        .filter((_response, index) => index < MAX_LENGTH).map((el, index) => (
-          <article data-testid={ `${index}-recipe-card` } key={ el.idMeal }>
-            <img
-              src={ el.strMealThumb }
-              alt="meal-thumb"
-              data-testid={ `${index}-card-img` }
-            />
-            <span data-testid={ `${index}-card-name` }>{el.strMeal}</span>
-          </article>
-        ))}
+      {pathname === '/drinks'
+      && renderDrinkRecipes(responseAPI, haveCategory, categoryReturnFromAPI)}
+
+      {pathname === '/meals'
+      && renderMealRecipes(responseAPI, haveCategory, categoryReturnFromAPI)}
+
       <Footer />
     </>
   );
