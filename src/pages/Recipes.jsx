@@ -10,9 +10,7 @@ const MAX_LENGTH = 12;
 
 export default function Recipes() {
   const {
-    categoryMeals,
     setCategoryMeals,
-    categoryDrinks,
     setCategoryDrinks,
     responseAPI,
     setResponseAPI,
@@ -46,8 +44,6 @@ export default function Recipes() {
   }, [
     pathname,
     setResponseAPI,
-    categoryMeals,
-    categoryDrinks,
     setCategoryDrinks,
     setCategoryMeals,
   ]);

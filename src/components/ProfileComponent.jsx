@@ -1,20 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Header from './Header';
-import Footer from './Footer';
 
 export default function ProfileComponent() {
   const user = JSON.parse(localStorage.getItem('user'));
-
+  const storage = user && user.email;
   const handlerLogout = () => {
     localStorage.clear();
     window.location.href = '/';
   };
   return (
     <div data-testid="profile-component">
-      <Header title="Profile" profile search={ false } />
       <section>
-        <h5 data-testid="profile-email">{user.email}</h5>
+        <h5 data-testid="profile-email">{storage}</h5>
       </section>
       <section>
         <Link to="/favorite-recipes">
@@ -44,7 +41,6 @@ export default function ProfileComponent() {
           </button>
         </Link>
       </section>
-      <Footer />
     </div>
   );
 }
