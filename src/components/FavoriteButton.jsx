@@ -34,15 +34,14 @@ function FavoriteButton() {
 
   return (
     isFavorite ? (
-      <button data-testid="favorite-btn">
-        <img src={ blackHeartIcon } alt="favorite-recipe" />
+      <button>
+        <img data-testid="favorite-btn" src={ blackHeartIcon } alt="favorite-recipe" />
       </button>
     ) : (
       <button
-        data-testid="favorite-btn"
         onClick={ () => addFavorite() }
       >
-        <img src={ whiteHeartIcon } alt="" />
+        <img data-testid="favorite-btn" src={ whiteHeartIcon } alt="" />
       </button>
     )
   );
