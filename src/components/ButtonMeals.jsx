@@ -58,7 +58,7 @@ export default function ButtonMeals() {
         data-testid="All-category-filter"
         onClick={ () => setHaveCategory(false) }
       >
-        Limpar Filtro
+        All
       </button>
     </div>
   );
