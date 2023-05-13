@@ -6,7 +6,7 @@ const URL_MEALS = 'https://www.themealdb.com/api/json/v1/1/';
 const URL_DRINKS = 'https://www.thecocktaildb.com/api/json/v1/1/';
 
 export default function SearchBar() {
-  const { setResponseAPI, setHaveCategory } = useContext(FetchContext);
+  const { setResponseAPI } = useContext(FetchContext);
 
   const [searchValue, setSearchValue] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
@@ -59,9 +59,7 @@ export default function SearchBar() {
     } else {
       setResponseAPI(response[pathname.substring(1)]);
     }
-
-    setHaveCategory(false);
-  }, [setHaveCategory, searchValue, selectedOption, history, setResponseAPI, pathname]);
+  }, [searchValue, selectedOption, history, setResponseAPI, pathname]);
 
   const handleOptionChange = ({ target }) => {
     const { value } = target;

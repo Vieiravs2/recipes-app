@@ -56,7 +56,10 @@ export default function ButtonMeals() {
       }
       <button
         data-testid="All-category-filter"
-        onClick={ () => setHaveCategory(false) }
+        onClick={ () => {
+          setHaveCategory(false);
+          setCategoryMealsAPI('');
+        } }
       >
         All
       </button>
