@@ -63,14 +63,34 @@ export default function RecipesDetails() {
                   const measureKey = `strMeasure${ingredientNumber}`;
                   const formattedString = `${el[key]} - ${el[measureKey]}`;
                   return (
-                    <p
-                      key={ key }
-                      data-testid={
-                        `${ingredientNumber - 1}-ingredient-name-and-measure`
-                      }
-                    >
-                      {formattedString}
-                    </p>
+                    !pathname.includes('progress')
+                      ? (
+                        <p
+                          key={ key }
+                          data-testid={
+                            `${ingredientNumber - 1}-ingredient-name-and-measure`
+                          }
+                        >
+                          {formattedString}
+                        </p>
+                      )
+                      : (
+                        <p
+                          key={ key }
+                          data-testid={
+                            `${ingredientNumber - 1}-ingredient-name-and-measure`
+                          }
+                        >
+                          <label
+                            data-testid={
+                              `${ingredientNumber - 1}-ingredient-step`
+                            }
+                          >
+                            <input type="checkbox" name="" id="" />
+                            {formattedString}
+                          </label>
+                        </p>
+                      )
                   );
                 }
                 return null;
@@ -98,14 +118,35 @@ export default function RecipesDetails() {
                   const measureKey = `strMeasure${ingredientNumber}`;
                   const formattedString = `${el[key]} - ${el[measureKey]}`;
                   return (
-                    <p
-                      key={ key }
-                      data-testid={
-                        `${ingredientNumber - 1}-ingredient-name-and-measure`
-                      }
-                    >
-                      {formattedString}
-                    </p>
+                    !pathname.includes('progress')
+                      ? (
+                        <p
+                          key={ key }
+                          data-testid={
+                            `${ingredientNumber - 1}-ingredient-name-and-measure`
+                          }
+                        >
+                          {formattedString}
+                        </p>
+                      )
+                      : (
+                        <p
+                          key={ key }
+                          data-testid={
+                            `${ingredientNumber - 1}-ingredient-name-and-measure`
+                          }
+                        >
+                          <label
+                            data-testid={
+                              `${ingredientNumber - 1}-ingredient-step`
+                            }
+                          >
+                            <input type="checkbox" name="" id="" />
+                            {formattedString}
+                          </label>
+                        </p>
+                      )
+
                   );
                 }
                 return null;
