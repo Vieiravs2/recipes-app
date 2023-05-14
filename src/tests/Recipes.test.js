@@ -5,6 +5,7 @@ import renderWithRouter from '../helpers/renderWithRouter';
 import FetchProvider from '../providers/FetchProvider';
 import { mockMaels } from './mocks/mockMeals';
 import { mockMealCategories } from './mocks/mockMealCategory';
+// import { mockCategoryBeef } from './mocks/mockCategoryBeef';
 // import { mockDrinks } from './mocks/mockDrinks';
 // import { mockDrinkCategories } from './mocks/mockDrinkCategoty';
 
@@ -41,19 +42,19 @@ describe('Testa a página de receitas', () => {
     });
   });
 
-  // it('testa o filtro de categorias', async () => {
-  //   renderWithRouter(
-  //     <FetchProvider>
-  //       <LoginProvider>
-  //         <Recipes />
-  //       </LoginProvider>
-  //     </FetchProvider>,
-  //     '/meals',
-  //   );
-  //   await waitFor(() => {
-  //     const beefButton = screen.getByRole('button', { name: /beef/i });
-  //     fireEvent.click(beefButton);
-  //     expect(mockFetch).toHaveBeenCalledTimes(3);
-  //   });
-  // });
+  it('testa o filtro de categorias', async () => {
+    renderWithRouter(
+      <FetchProvider>
+        <LoginProvider>
+          <Recipes />
+        </LoginProvider>
+      </FetchProvider>,
+      '/meals',
+    );
+    await waitFor(() => {
+      expect(screen.getByTestId('10-card-name')).toBeInTheDocument();
+      // userEvent.click(beefButton);
+      screen.debug();
+    });
+  });
 });
