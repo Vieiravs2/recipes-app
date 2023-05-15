@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { FetchContext } from '../providers/FetchProvider';
@@ -13,27 +13,31 @@ function renderDrinkRecipes(responseAPI, haveCategory, categoryReturnFromAPI) {
     return categoryReturnFromAPI
       .filter((_response, index) => index < MAX_LENGTH)
       .map((el, index) => (
-        <article data-testid={ `${index}-recipe-card` } key={ el.IdDrink }>
-          <img
-            src={ el.strDrinkThumb }
-            alt="drink-thumb"
-            data-testid={ `${index}-card-img` }
-          />
-          <span data-testid={ `${index}-card-name` }>{el.strDrink}</span>
-        </article>
+        <Link to={ `/drinks/${el.idDrink}` } key={ el.idDrink }>
+          <article data-testid={ `${index}-recipe-card` }>
+            <img
+              src={ el.strDrinkThumb }
+              alt="drink-thumb"
+              data-testid={ `${index}-card-img` }
+            />
+            <span data-testid={ `${index}-card-name` }>{el.strDrink}</span>
+          </article>
+        </Link>
       ));
   } if (!haveCategory && Array.isArray(responseAPI)) {
     return responseAPI
       .filter((_response, index) => index < MAX_LENGTH)
       .map((el, index) => (
-        <article data-testid={ `${index}-recipe-card` } key={ el.IdDrink }>
-          <img
-            src={ el.strDrinkThumb }
-            alt="drink-thumb"
-            data-testid={ `${index}-card-img` }
-          />
-          <span data-testid={ `${index}-card-name` }>{el.strDrink}</span>
-        </article>
+        <Link to={ `/drinks/${el.idDrink}` } key={ el.idDrink }>
+          <article data-testid={ `${index}-recipe-card` } key={ el.idDrink }>
+            <img
+              src={ el.strDrinkThumb }
+              alt="drink-thumb"
+              data-testid={ `${index}-card-img` }
+            />
+            <span data-testid={ `${index}-card-name` }>{el.strDrink}</span>
+          </article>
+        </Link>
       ));
   }
   return null;
@@ -44,27 +48,31 @@ function renderMealRecipes(responseAPI, haveCategory, categoryReturnFromAPI) {
     return categoryReturnFromAPI
       .filter((_response, index) => index < MAX_LENGTH)
       .map((el, index) => (
-        <article data-testid={ `${index}-recipe-card` } key={ el.idMeal }>
-          <img
-            src={ el.strMealThumb }
-            alt="meal-thumb"
-            data-testid={ `${index}-card-img` }
-          />
-          <span data-testid={ `${index}-card-name` }>{el.strMeal}</span>
-        </article>
+        <Link to={ `/meals/${el.idMeal}` } key={ el.idMeal }>
+          <article data-testid={ `${index}-recipe-card` }>
+            <img
+              src={ el.strMealThumb }
+              alt="meal-thumb"
+              data-testid={ `${index}-card-img` }
+            />
+            <span data-testid={ `${index}-card-name` }>{el.strMeal}</span>
+          </article>
+        </Link>
       ));
   } if (!haveCategory && Array.isArray(responseAPI)) {
     return responseAPI
       .filter((_response, index) => index < MAX_LENGTH)
       .map((el, index) => (
-        <article data-testid={ `${index}-recipe-card` } key={ el.idMeal }>
-          <img
-            src={ el.strMealThumb }
-            alt="meal-thumb"
-            data-testid={ `${index}-card-img` }
-          />
-          <span data-testid={ `${index}-card-name` }>{el.strMeal}</span>
-        </article>
+        <Link to={ `/meals/${el.idMeal}` } key={ el.idMeal }>
+          <article data-testid={ `${index}-recipe-card` } key={ el.idMeal }>
+            <img
+              src={ el.strMealThumb }
+              alt="meal-thumb"
+              data-testid={ `${index}-card-img` }
+            />
+            <span data-testid={ `${index}-card-name` }>{el.strMeal}</span>
+          </article>
+        </Link>
       ));
   }
   return null;

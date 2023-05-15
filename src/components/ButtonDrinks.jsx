@@ -56,9 +56,12 @@ export default function ButtonDrinks() {
       }
       <button
         data-testid="All-category-filter"
-        onClick={ () => setHaveCategory(false) }
+        onClick={ () => {
+          setHaveCategory(false);
+          setCategoryDrinksAPI('');
+        } }
       >
-        Limpar Filtro
+        All
       </button>
     </div>
   );

@@ -92,9 +92,9 @@ export default function RecipesDetails() {
   return (
     <>
       <main>
-        {recipe.map((el) => (
+        {recipe.map((el, index) => (
           <div key={ el[strMealOrDrink] }>
-            <ShareButton />
+            <ShareButton index={ index } />
             <FavoriteButton />
             <img src={ el[mealOrDrinkThumb] } alt="meal" data-testid="recipe-photo" />
             <h3 data-testid="recipe-title">{el[strMealOrDrink]}</h3>
