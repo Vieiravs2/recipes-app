@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import shareIcon from '../images/shareIcon.svg';
 
@@ -10,9 +10,12 @@ function ShareButton() {
   const history = useHistory();
   const { pathname } = history.location;
   const [linkCopied, setLinkCopied] = useState(false);
+  const { id } = useParams();
+
+  const mealsOrDrinks = pathname.includes('/drinks') ? '/drinks/' : '/meals/';
 
   const shareLink = () => {
-    const link = `http://localhost:3000${pathname}`;
+    const link = `http://localhost:3000${mealsOrDrinks}${id}`;
     copy(link);
     setTimeout(() => setLinkCopied(false), TWO_SECONDS);
     setLinkCopied(true);
