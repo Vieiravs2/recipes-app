@@ -44,8 +44,6 @@ export default function RecipesDetails() {
   }, [endpoint, id, pathname, mealsOrDrinks,
     invertedEndpoint, invertPathname, setRecipe]);
 
-  // console.log(recommedations);
-
   return (
     <>
       <main>
