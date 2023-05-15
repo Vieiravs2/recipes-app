@@ -1,5 +1,6 @@
 import { act } from 'react-dom/test-utils';
 import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import renderWithRouter from '../helpers/renderWithRouter';
 import fetch from '../../cypress/mocks/fetch';
@@ -80,5 +81,30 @@ describe('Casos de teste da página _RecipeDetails_', () => {
 
     const drinkDescription = screen.getByText(/shake well in a shaker with ice\. strain in a martini glass\./i);
     expect(drinkDescription).toBeInTheDocument();
+  });
+
+  it('Verifica se é possível iniciar uma receita', async () => {
+    await act(async () => {
+      renderWithRouter(
+        <FetchProvider>
+          <LoginProvider>
+            <App />
+          </LoginProvider>
+        </FetchProvider>,
+        '/meals/52977',
+      );
+    });
+
+    expect(global.fetch).toHaveBeenCalledTimes(2);
+
+    const startBtn = screen.getByRole('button', {
+      name: /start recipe/i,
+    });
+    expect(startBtn).toBeInTheDocument();
+    userEvent.click(startBtn);
+
+    const firstIngredient = screen.getByRole('checkbox', { name: /penne rigate - 1 pound/i });
+    userEvent.click(firstIngredient);
+    expect(firstIngredient).toBeChecked();
   });
 });

@@ -71,7 +71,7 @@ export default function RecipesDetails() {
       }
     }
     fetchDetails();
-  }, [endpoint, id, pathname, mealsOrDrinks, recipe,
+  }, [endpoint, id, pathname, mealsOrDrinks,
     invertedEndpoint, invertPathname, setRecipe]);
 
   const handleChange = useCallback((ingredientNumber) => {
