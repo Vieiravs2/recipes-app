@@ -77,7 +77,7 @@ export default function RecipesDetails() {
     }
     fetchDetails();
   }, [endpoint, id, pathname, mealsOrDrinks, ingredientStatus,
-    invertedEndpoint, invertPathname, setRecipe]);
+    invertedEndpoint, invertPathname, setRecipe, setIngredientStatus]);
 
   const handleChange = useCallback((ingredientNumber) => {
     const filterIngStatus = JSON.parse(localStorage.getItem('ingredient_status'))
@@ -92,7 +92,7 @@ export default function RecipesDetails() {
     localStorage.setItem('ingredient_status', JSON.stringify(filterIngStatus));
     setIngredientStatus(filterIngStatus);
     console.log(ingredientStatus);
-  }, [id, ingredientStatus]);
+  }, [id, ingredientStatus, setIngredientStatus]);
 
   return (
     <>
