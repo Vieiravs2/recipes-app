@@ -27,7 +27,11 @@ export default function DoneRecipes() {
             data-testid={ `${index}-horizontal-image` }
           />
           <h4 data-testid={ `${index}-horizontal-name` }>{recipe.name}</h4>
-          <span data-testid={ `${index}-horizontal-top-text` }>{recipe.category}</span>
+          <span
+            data-testid={ `${index}-horizontal-top-text` }
+          >
+            {`${recipe.nationality} - ${recipe.category}`}
+          </span>
           <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
           <div>
             {recipe.tags.map((tag) => (
@@ -39,8 +43,12 @@ export default function DoneRecipes() {
               </span>
             ))}
           </div>
-          <button data-testid={ `${index}-horizontal-share-btn` }>
-            <img src={ shareIcon } alt="share-icon" />
+          <button>
+            <img
+              src={ shareIcon }
+              alt="share-icon"
+              data-testid={ `${index}-horizontal-share-btn` }
+            />
           </button>
         </article>
       ))}
