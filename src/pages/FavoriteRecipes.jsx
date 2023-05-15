@@ -20,7 +20,7 @@ export default function FavoriteRecipes() {
   };
 
   useEffect(() => {
-    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
     setStateFavoriteRecipes(favoriteRecipes);
   }, []);
 
