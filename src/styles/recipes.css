@@ -1,11 +1,7 @@
 :checked ~ .checkBox {
-    text-decoration: line-through solid black;
-  }
+  text-decoration: line-through solid black;
+}
 
-  .checked {
-    text-decoration: line-through solid black;
-  }
-
-  /* .unchecked {
-    
-  } */
+.checked {
+  text-decoration: line-through solid black;
+}
