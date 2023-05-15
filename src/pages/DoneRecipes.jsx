@@ -10,6 +10,7 @@ const TWO_SECONDS = 2000;
 export default function DoneRecipes() {
   const [doneRecipes, setDoneRecipes] = useState([]);
   const [link, setLink] = useState(false);
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
     const getRecipesFromLocalStorage = JSON
@@ -24,15 +25,33 @@ export default function DoneRecipes() {
     setLink(true);
   };
 
+  const filteredRecipes = doneRecipes
+    .filter((recipe) => recipe.type === filter || filter === '');
+
   return (
     <main>
       <Header title="Done Recipes" profile search={ false } />
       <section className="done__btn">
-        <button data-testid="filter-by-all-btn">All</button>
-        <button data-testid="filter-by-meal-btn">Meals</button>
-        <button data-testid="filter-by-drink-btn">Drinks</button>
+        <button
+          data-testid="filter-by-all-btn"
+          onClick={ () => setFilter('') }
+        >
+          All
+        </button>
+        <button
+          data-testid="filter-by-meal-btn"
+          onClick={ () => setFilter('meal') }
+        >
+          Meals
+        </button>
+        <button
+          data-testid="filter-by-drink-btn"
+          onClick={ () => setFilter('drink') }
+        >
+          Drinks
+        </button>
       </section>
-      {doneRecipes.map((recipe, index) => (
+      {filteredRecipes.map((recipe, index) => (
         <article className="done__card" key={ recipe.id }>
           <img
             src={ recipe.image }
