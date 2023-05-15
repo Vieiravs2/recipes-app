@@ -15,7 +15,7 @@ export default function SearchBar() {
   const { pathname } = history.location;
 
   const fetchData = useCallback(async () => {
-    console.log(selectedOption);
+    // console.log(selectedOption);
     let response = [];
     const endpoint = pathname === '/meals' ? URL_MEALS : URL_DRINKS;
 
@@ -37,7 +37,7 @@ export default function SearchBar() {
     default: {
       const getAPI = await fetch(`${endpoint}search.php?s=${searchValue}`);
       response = await getAPI.json();
-      console.log('Response', response);
+      // console.log('Response', response);
       break;
     }
     }

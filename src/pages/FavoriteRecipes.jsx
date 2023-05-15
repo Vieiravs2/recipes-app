@@ -13,7 +13,7 @@ export default function FavoriteRecipes() {
 
   const shareLink = (category, id) => {
     const link = `http://localhost:3000/${category}/${id}`;
-    console.log('Esse é o link', link);
+    // console.log('Esse é o link', link);
     copy(link);
     setTimeout(() => setLinkCopied(false), TWO_SECONDS);
     setLinkCopied(true);
