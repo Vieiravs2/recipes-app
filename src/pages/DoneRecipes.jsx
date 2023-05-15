@@ -3,14 +3,26 @@ import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
 
+const copy = require('clipboard-copy');
+
+const TWO_SECONDS = 2000;
+
 export default function DoneRecipes() {
   const [doneRecipes, setDoneRecipes] = useState([]);
+  const [link, setLink] = useState(false);
 
   useEffect(() => {
     const getRecipesFromLocalStorage = JSON
       .parse(localStorage.getItem('doneRecipes')) || [];
     setDoneRecipes(getRecipesFromLocalStorage);
   }, []);
+
+  const shareLink = (type, id) => {
+    const route = type === 'meal' ? 'meals' : 'drinks';
+    copy(`http://localhost:3000/${route}/${id}`);
+    setTimeout(() => setLink(false), TWO_SECONDS);
+    setLink(true);
+  };
 
   return (
     <main>
@@ -52,13 +64,14 @@ export default function DoneRecipes() {
               </span>
             ))}
           </div>
-          <button>
+          <button onClick={ () => shareLink(recipe.type, recipe.id) }>
             <img
               src={ shareIcon }
               alt="share-icon"
               data-testid={ `${index}-horizontal-share-btn` }
             />
           </button>
+          {link && <span>Link copied!</span>}
         </article>
       ))}
     </main>
