@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
 
@@ -27,11 +28,19 @@ export default function DoneRecipes() {
             data-testid={ `${index}-horizontal-image` }
           />
           <h4 data-testid={ `${index}-horizontal-name` }>{recipe.name}</h4>
-          <span
-            data-testid={ `${index}-horizontal-top-text` }
-          >
-            {`${recipe.nationality} - ${recipe.category}`}
-          </span>
+          { recipe.type === 'meal' ? (
+            <span
+              data-testid={ `${index}-horizontal-top-text` }
+            >
+              {`${recipe.nationality} - ${recipe.category}`}
+            </span>
+          ) : (
+            <span
+              data-testid={ `${index}-horizontal-top-text` }
+            >
+              {recipe.alcoholicOrNot}
+            </span>
+          )}
           <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
           <div>
             {recipe.tags.map((tag) => (
