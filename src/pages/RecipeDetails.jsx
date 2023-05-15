@@ -16,12 +16,12 @@ const DRINKS_SUBSTRING = 7;
 const MAX_RECOMMENDATIONS = 6;
 
 export default function RecipesDetails() {
-  const { setRecipe, recipe } = useContext(FetchContext);
+  const { setRecipe, recipe,
+    ingredientStatus, setIngredientStatus } = useContext(FetchContext);
   const [recommedations, setRecommendations] = useState([]);
   const history = useHistory();
   const { pathname } = history.location;
   const { id } = useParams();
-  const [ingredientStatus, setIngredientStatus] = useState([]);
 
   const endpoint = pathname.includes('/meals') ? URL_MEALS_DETAILS : URL_DRINKS_DETAILS;
   const mealsOrDrinks = pathname.includes('/drinks') ? DRINKS_SUBSTRING : MEALS_SUBSTRING;
@@ -51,11 +51,11 @@ export default function RecipesDetails() {
         .map((el) => (Object.keys(el).filter((ele) => ele.includes('strIngredient'))));
       const keys2 = dataDet[pathname.substring(1, mealsOrDrinks)]
         .map((el) => (Object.keys(el).filter((ele) => ele.includes('strMeas'))));
-      const newMeas = {};
+      const newMeas = [];
       keys2[0].forEach((key, index) => {
         if (dataDet[pathname.substring(1, mealsOrDrinks)][0][key] !== ''
         && dataDet[pathname.substring(1, mealsOrDrinks)][0][key] !== null) {
-          newMeas[index] = [{
+          [newMeas[index]] = [{
             measure: dataDet[pathname.substring(1, mealsOrDrinks)][0][key],
             ingredient: dataDet[pathname.substring(1, mealsOrDrinks)][0][keys[0][index]],
             clicked: false,
@@ -64,25 +64,30 @@ export default function RecipesDetails() {
       });
       const getIngredientStatus = JSON
         .parse(localStorage.getItem('ingredient_status')) || [];
+      // console.log(getIngredientStatus);
+      // console.log(ingredientStatus);
+
       if (getIngredientStatus.every((ingredient) => ingredient.id !== id)) {
-        const ingStatusToStorage = [...getIngredientStatus, { id, status: newMeas }];
+        const ingStatusToStorage = [
+          ...getIngredientStatus, { id, status: newMeas }];
         localStorage.setItem('ingredient_status', JSON.stringify(ingStatusToStorage));
         setIngredientStatus(ingStatusToStorage);
+        console.log(ingredientStatus);
       }
     }
     fetchDetails();
-  }, [endpoint, id, pathname, mealsOrDrinks,
+  }, [endpoint, id, pathname, mealsOrDrinks, ingredientStatus,
     invertedEndpoint, invertPathname, setRecipe]);
 
   const handleChange = useCallback((ingredientNumber) => {
     const filterIngStatus = JSON.parse(localStorage.getItem('ingredient_status'))
       .filter((ingredient) => ingredient.id === id);
-    console.log(filterIngStatus);
-    console.log(filterIngStatus[0]
-      .status[ingredientNumber][0].clicked);
-    filterIngStatus[0].status[ingredientNumber][0].clicked = !filterIngStatus[0]
-      .status[ingredientNumber][0].clicked;
-    console.log(filterIngStatus[0].status[ingredientNumber][0].clicked);
+    // console.log(filterIngStatus);
+    // console.log(filterIngStatus[0]
+    //   .status[ingredientNumber][0].clicked);
+    filterIngStatus[0].status[ingredientNumber].clicked = !filterIngStatus[0]
+      .status[ingredientNumber].clicked;
+    // console.log(filterIngStatus[0].status[ingredientNumber][0].clicked);
 
     localStorage.setItem('ingredient_status', JSON.stringify(filterIngStatus));
     setIngredientStatus(filterIngStatus);
@@ -131,7 +136,7 @@ export default function RecipesDetails() {
                             className={
                               JSON.parse(localStorage.getItem('ingredient_status'))
                                 .filter((ingredient) => ingredient.id === id)[0]
-                                .status[ingredientNumber - 1][0].clicked
+                                .status[ingredientNumber - 1].clicked
                                 ? 'checked' : ''
                             }
                           >
@@ -146,7 +151,7 @@ export default function RecipesDetails() {
                                 checked={
                                   JSON.parse(localStorage.getItem('ingredient_status'))
                                     .filter((ingredient) => ingredient.id === id)[0]
-                                    .status[ingredientNumber - 1][0].clicked
+                                    .status[ingredientNumber - 1].clicked
                                 }
                               />
                               {formattedString}
