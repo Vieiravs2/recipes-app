@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
@@ -43,14 +44,17 @@ export default function FavoriteRecipes() {
           <div key={ element.id } className="cards_favorite_recipes">
             {element.type === 'meal' ? (
               <>
-                <img
-                  src={ element.image }
-                  alt={ element.name }
-                  data-testid={ `${index}-horizontal-image` }
-                />
-                <span data-testid={ `${index}-horizontal-name` }>
-                  {element.name}
-                </span>
+                <Link to={ `/${element.type}s/${element.id}` }>
+                  <img
+                    src={ element.image }
+                    alt={ element.name }
+                    data-testid={ `${index}-horizontal-image` }
+                    className="favorite_card_img"
+                  />
+                  <span data-testid={ `${index}-horizontal-name` }>
+                    {element.name}
+                  </span>
+                </Link>
                 <span data-testid={ `${index}-horizontal-top-text` }>
                   {`${element.nationality} - ${element.category}`}
                 </span>
@@ -73,16 +77,19 @@ export default function FavoriteRecipes() {
               </>
             ) : (
               <>
-                <img
-                  src={ element.image }
-                  alt={ element.name }
-                  data-testid={ `${index}-horizontal-image` }
-                />
+                <Link to={ `/${element.type}s/${element.id}` }>
+                  <img
+                    src={ element.image }
+                    alt={ element.name }
+                    data-testid={ `${index}-horizontal-image` }
+                    className="favorite_card_img"
+                  />
+                  <span data-testid={ `${index}-horizontal-name` }>
+                    {element.name}
+                  </span>
+                </Link>
                 <span data-testid={ `${index}-horizontal-top-text` }>
                   {element.alcoholicOrNot ? element.alcoholicOrNot : 'No'}
-                </span>
-                <span data-testid={ `${index}-horizontal-name` }>
-                  {element.name}
                 </span>
                 <button onClick={ () => shareLink('drinks', element.id) }>
                   <img
