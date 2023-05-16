@@ -27,7 +27,7 @@ function FavoriteButton() {
         id,
         type: recipe[0].idMeal ? 'meal' : 'drink',
         nationality: recipe[0].strArea || '',
-        category: recipe[0].strCategory || '',
+        category: recipe[0].strCategory,
         alcoholicOrNot: recipe[0].strAlcoholic || '',
         name: recipe[0].strMeal || recipe[0].strDrink,
         image: recipe[0].strMealThumb || recipe[0].strDrinkThumb,
@@ -37,7 +37,7 @@ function FavoriteButton() {
   };
 
   const dellFavorite = () => {
-    const getRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+    const getRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
     const recipeToBeStoraged = getRecipes.filter(({ id: idRecipe }) => id !== idRecipe);
     localStorage.setItem('favoriteRecipes', JSON.stringify(recipeToBeStoraged));
     setIsFavorite(false);
@@ -46,15 +46,19 @@ function FavoriteButton() {
   return (
     isFavorite ? (
       <button
+        data-testid="favorite-btn"
         onClick={ () => dellFavorite() }
+        src={ blackHeartIcon }
       >
-        <img data-testid="favorite-btn" src={ blackHeartIcon } alt="favorite-recipe" />
+        <img src={ blackHeartIcon } alt="favorite-recipe" />
       </button>
     ) : (
       <button
+        data-testid="favorite-btn"
         onClick={ () => addFavorite() }
+        src={ whiteHeartIcon }
       >
-        <img data-testid="favorite-btn" src={ whiteHeartIcon } alt="" />
+        <img src={ whiteHeartIcon } alt="favorite-recipe" />
       </button>
     )
   );
