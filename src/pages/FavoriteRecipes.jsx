@@ -6,7 +6,7 @@ import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 const copy = require('clipboard-copy');
 
-const TWO_SECONDS = 2000;
+const TWO_SECONDS = 1000;
 
 export default function FavoriteRecipes() {
   const [stateFavoriteRecipes, setStateFavoriteRecipes] = useState([]);
@@ -28,15 +28,12 @@ export default function FavoriteRecipes() {
   }, []);
 
   const dellFavorite = (elementId) => {
-    const getRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+    const getRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
     const recipeToBeStoraged = getRecipes
       .filter(({ id }) => elementId !== id);
     localStorage.setItem('favoriteRecipes', JSON.stringify(recipeToBeStoraged));
     setStateFavoriteRecipes(recipeToBeStoraged);
   };
-
-  console.log(stateFavoriteRecipes
-    .filter((favorite) => favorite.type === meal || favorite.type === drink));
 
   return (
     <div className="favorite_recipes_main">
@@ -120,7 +117,8 @@ export default function FavoriteRecipes() {
                     </span>
                   </Link>
                   <span data-testid={ `${index}-horizontal-top-text` }>
-                    {element.alcoholicOrNot ? element.alcoholicOrNot : 'No'}
+                    {/* {element.alcoholicOrNot ? element.alcoholicOrNot : 'No'} */}
+                    {element.alcoholicOrNot}
                   </span>
                   <button onClick={ () => shareLink('drinks', element.id) }>
                     <img
