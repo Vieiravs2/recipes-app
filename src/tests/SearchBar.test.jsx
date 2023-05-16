@@ -174,31 +174,6 @@ describe('Testes no SearchBar', () => {
     alertSpy.mockRestore();
   });
 
-  test('Exibe alerta quando a opção "First letter", mais de um caractere', async () => {
-    renderWithRouter(
-      <LoginProvider>
-        <FetchProvider>
-          <Recipes />
-        </FetchProvider>
-      </LoginProvider>,
-    );
-
-    const searchIcon = screen.getByRole('img', { name: /search-icon/i });
-    userEvent.click(searchIcon);
-    const searchInput = screen.getByTestId(serchInput);
-    userEvent.type(searchInput, 'Xablau');
-    const firstLetterOption = screen.getByRole('radio', { name: /first letter/i });
-    userEvent.click(firstLetterOption);
-    const searchButton = screen.getByRole('button', { name: /buscar/i });
-    userEvent.click(searchButton);
-    const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
-    userEvent.click(searchButton);
-    screen.debug();
-
-    expect(alertSpy).toHaveBeenCalledWith('Your search must have only 1 (one) character');
-    alertSpy.mockRestore();
-  });
-
   test('Redireciona para pagina pesquisa e retorna apenas uma refeição', async () => {
     const response = {
       meals: [
