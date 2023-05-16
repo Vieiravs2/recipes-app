@@ -12,12 +12,12 @@ export default function FinishRecipeButton() {
 
   useEffect(() => {
     if (ingredientStatus && ingredientStatus.length > 0) {
-      console.log(ingredientStatus);
+      // console.log(ingredientStatus);
       const filterIngStatus = ingredientStatus
         .filter((ingredient) => ingredient.id === id)[0].status;
       const clickedStatus = filterIngStatus.every((ingredient) => ingredient.clicked);
       setClicked(clickedStatus);
-      console.log(clickedStatus);
+      // console.log(clickedStatus);
     }
   }, [id, ingredientStatus]);
 
@@ -35,7 +35,7 @@ export default function FinishRecipeButton() {
         id,
         type: recipe[0].idMeal ? 'meal' : 'drink',
         nationality: recipe[0].strArea || '',
-        category: recipe[0].strCategory || '',
+        category: recipe[0].strCategory,
         alcoholicOrNot: recipe[0].strAlcoholic || '',
         name: recipe[0].strMeal || recipe[0].strDrink,
         image: recipe[0].strMealThumb || recipe[0].strDrinkThumb,
@@ -43,7 +43,7 @@ export default function FinishRecipeButton() {
         tags: recipe[0].idMeal ? recipe[0].strTags.split(',') : [],
       }];
     localStorage.setItem('doneRecipes', JSON.stringify(doneRecipeToBeStoraged));
-    console.log(recipe);
+    // console.log(recipe);
   }, [history, doneRecipesStoraged, id, recipe]);
 
   return (

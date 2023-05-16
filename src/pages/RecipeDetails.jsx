@@ -91,8 +91,7 @@ export default function RecipesDetails() {
 
     localStorage.setItem('ingredient_status', JSON.stringify(filterIngStatus));
     setIngredientStatus(filterIngStatus);
-    console.log(ingredientStatus);
-  }, [id, ingredientStatus, setIngredientStatus]);
+  }, [id, setIngredientStatus]);
 
   return (
     <>
