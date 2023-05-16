@@ -12,6 +12,28 @@ import App from '../App';
 
 const CALL_API = 4;
 const TWO_SECONDS = 2000;
+const MEAL_PATH = '/meals/52771';
+const DRINK_PATH = '/drinks/178319';
+const favoriteRecipes = [
+  {
+    id: '52771',
+    type: 'meal',
+    nationality: 'Italian',
+    category: 'Vegetarian',
+    alcoholicOrNot: '',
+    name: 'Spicy Arrabiata Penne',
+    image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
+  },
+  {
+    id: '178319',
+    type: 'drink',
+    nationality: '',
+    category: 'Cocktail',
+    alcoholicOrNot: 'Alcoholic',
+    name: 'Aquamarine',
+    image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
+  },
+];
 
 jest.mock('clipboard-copy', () => jest.fn());
 jest.useFakeTimers();
@@ -29,7 +51,7 @@ describe('Casos de teste da página _RecipeDetails_', () => {
             <App />
           </LoginProvider>
         </FetchProvider>,
-        '/meals/52771',
+        MEAL_PATH,
       );
     });
 
@@ -68,7 +90,7 @@ describe('Casos de teste da página _RecipeDetails_', () => {
             <App />
           </LoginProvider>
         </FetchProvider>,
-        '/drinks/178319',
+        DRINK_PATH,
       );
     });
 
@@ -123,7 +145,7 @@ describe('Casos de teste da página _RecipeDetails_', () => {
             <App />
           </LoginProvider>
         </FetchProvider>,
-        '/meals/52771',
+        MEAL_PATH,
       );
     });
     expect(global.fetch).toHaveBeenCalledTimes(CALL_API);
@@ -139,5 +161,82 @@ describe('Casos de teste da página _RecipeDetails_', () => {
     });
 
     expect(screen.queryByText('Link copied!')).not.toBeInTheDocument();
+  });
+
+  it('Verifica se o botão de favoritar funciona corretamente para Meals', async () => {
+    await act(async () => {
+      renderWithRouter(
+        <FetchProvider>
+          <LoginProvider>
+            <App />
+          </LoginProvider>
+        </FetchProvider>,
+        MEAL_PATH,
+      );
+    });
+
+    const favoriteBtn = screen.getByRole('button', {
+      name: /favorite-recipe/i,
+    });
+    const whiteHeartImg = screen.getByRole('img', {
+      name: /favorite-recipe/i,
+    });
+    expect(whiteHeartImg.src).toContain('whiteHeart');
+    userEvent.click(favoriteBtn);
+
+    const blackHeartImg = screen.getByRole('img', {
+      name: /favorite-recipe/i,
+    });
+    expect(blackHeartImg.src).toContain('blackHeart');
+    userEvent.click(favoriteBtn);
+    expect(whiteHeartImg).toBeInTheDocument();
+  });
+
+  it('Verifica se o botão de favoritar funciona corretamente para Drinks', async () => {
+    await act(async () => {
+      renderWithRouter(
+        <FetchProvider>
+          <LoginProvider>
+            <App />
+          </LoginProvider>
+        </FetchProvider>,
+        DRINK_PATH,
+      );
+    });
+
+    const favoriteBtn = screen.getByRole('button', {
+      name: /favorite-recipe/i,
+    });
+    const whiteHeartImg = screen.getByRole('img', {
+      name: /favorite-recipe/i,
+    });
+    expect(whiteHeartImg.src).toContain('whiteHeart');
+    userEvent.click(favoriteBtn);
+
+    const blackHeartImg = screen.getByRole('img', {
+      name: /favorite-recipe/i,
+    });
+    expect(blackHeartImg.src).toContain('blackHeart');
+    userEvent.click(favoriteBtn);
+    expect(whiteHeartImg).toBeInTheDocument();
+  });
+
+  it('Verifica se o botão de favoritar funciona corretamente para Drinks', async () => {
+    localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
+    await act(async () => {
+      renderWithRouter(
+        <FetchProvider>
+          <LoginProvider>
+            <App />
+          </LoginProvider>
+        </FetchProvider>,
+        DRINK_PATH,
+      );
+    });
+
+    const blackHeartImg = screen.getByRole('img', {
+      name: /favorite-recipe/i,
+    });
+    expect(blackHeartImg.src).toContain('blackHeart');
   });
 });
