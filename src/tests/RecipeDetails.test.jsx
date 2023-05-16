@@ -11,8 +11,10 @@ import FetchProvider from '../providers/FetchProvider';
 import App from '../App';
 
 const CALL_API = 4;
+const TWO_SECONDS = 2000;
 
 jest.mock('clipboard-copy', () => jest.fn());
+jest.useFakeTimers();
 
 describe('Casos de teste da página _RecipeDetails_', () => {
   beforeEach(async () => {
@@ -124,7 +126,6 @@ describe('Casos de teste da página _RecipeDetails_', () => {
         '/meals/52771',
       );
     });
-
     expect(global.fetch).toHaveBeenCalledTimes(CALL_API);
 
     const shareButton = screen.getByTestId('share-btn');
@@ -132,5 +133,11 @@ describe('Casos de teste da página _RecipeDetails_', () => {
 
     userEvent.click(shareButton);
     expect(clipboardCopy).toHaveBeenCalledWith('http://localhost:3000/meals/52771');
+
+    act(() => {
+      jest.advanceTimersByTime(TWO_SECONDS);
+    });
+
+    expect(screen.queryByText('Link copied!')).not.toBeInTheDocument();
   });
 });
