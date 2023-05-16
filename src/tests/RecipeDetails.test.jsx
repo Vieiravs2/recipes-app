@@ -2,12 +2,17 @@ import { act } from 'react-dom/test-utils';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import clipboardCopy from 'clipboard-copy';
 import renderWithRouter from '../helpers/renderWithRouter';
 import fetch from '../../cypress/mocks/fetch';
 
 import LoginProvider from '../providers/LoginProvider';
 import FetchProvider from '../providers/FetchProvider';
 import App from '../App';
+
+const CALL_API = 4;
+
+jest.mock('clipboard-copy', () => jest.fn());
 
 describe('Casos de teste da página _RecipeDetails_', () => {
   beforeEach(async () => {
@@ -26,7 +31,7 @@ describe('Casos de teste da página _RecipeDetails_', () => {
       );
     });
 
-    expect(global.fetch).toHaveBeenCalledTimes(2);
+    expect(global.fetch).toHaveBeenCalledTimes(CALL_API);
 
     const mealImg = screen.getByRole('img', { name: /meal/i });
     expect(mealImg).toBeInTheDocument();
@@ -65,7 +70,7 @@ describe('Casos de teste da página _RecipeDetails_', () => {
       );
     });
 
-    expect(global.fetch).toHaveBeenCalledTimes(2);
+    expect(global.fetch).toHaveBeenCalledTimes(CALL_API);
 
     const drinkTitle = screen.getByRole('heading', { name: /aquamarine/i });
     expect(drinkTitle).toBeInTheDocument();
@@ -95,7 +100,7 @@ describe('Casos de teste da página _RecipeDetails_', () => {
       );
     });
 
-    expect(global.fetch).toHaveBeenCalledTimes(2);
+    expect(global.fetch).toHaveBeenCalledTimes(CALL_API);
 
     const startBtn = screen.getByRole('button', {
       name: /start recipe/i,
@@ -106,5 +111,26 @@ describe('Casos de teste da página _RecipeDetails_', () => {
     const firstIngredient = screen.getByRole('checkbox', { name: /penne rigate - 1 pound/i });
     userEvent.click(firstIngredient);
     expect(firstIngredient).toBeChecked();
+  });
+
+  it('Verifica se o botão de compartilhar existe', async () => {
+    await act(async () => {
+      renderWithRouter(
+        <FetchProvider>
+          <LoginProvider>
+            <App />
+          </LoginProvider>
+        </FetchProvider>,
+        '/meals/52771',
+      );
+    });
+
+    expect(global.fetch).toHaveBeenCalledTimes(CALL_API);
+
+    const shareButton = screen.getByTestId('share-btn');
+    expect(shareButton).toBeInTheDocument();
+
+    userEvent.click(shareButton);
+    expect(clipboardCopy).toHaveBeenCalledWith('http://localhost:3000/meals/52771');
   });
 });
