@@ -11,8 +11,8 @@ export default function FavoriteRecipes() {
   const [stateFavoriteRecipes, setStateFavoriteRecipes] = useState([]);
   const [linkCopied, setLinkCopied] = useState(false);
 
-  const shareLink = (category, id) => {
-    const link = `http://localhost:3000/${category}/${id}`;
+  const shareLink = (category, elementId) => {
+    const link = `http://localhost:3000/${category}/${elementId}`;
     // console.log('Esse é o link', link);
     copy(link);
     setTimeout(() => setLinkCopied(false), TWO_SECONDS);
@@ -20,9 +20,17 @@ export default function FavoriteRecipes() {
   };
 
   useEffect(() => {
-    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
-    setStateFavoriteRecipes(favoriteRecipes);
+    const sttFavoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+    setStateFavoriteRecipes(sttFavoriteRecipes);
   }, []);
+
+  const dellFavorite = (elementId) => {
+    const getRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+    const recipeToBeStoraged = getRecipes
+      .filter(({ id }) => elementId !== id);
+    localStorage.setItem('favoriteRecipes', JSON.stringify(recipeToBeStoraged));
+    setStateFavoriteRecipes(recipeToBeStoraged);
+  };
 
   return (
     <div className="favorite_recipes_main">
@@ -57,6 +65,7 @@ export default function FavoriteRecipes() {
                 <button
                   src={ blackHeartIcon }
                   data-testid={ `${index}-horizontal-favorite-btn` }
+                  onClick={ () => dellFavorite(element.id) }
                 >
                   <img src={ blackHeartIcon } alt="favorite-icon" />
                 </button>
@@ -85,6 +94,7 @@ export default function FavoriteRecipes() {
                 <button
                   src={ blackHeartIcon }
                   data-testid={ `${index}-horizontal-favorite-btn` }
+                  onClick={ () => dellFavorite(element.id) }
                 >
                   <img src={ blackHeartIcon } alt="favorite-icon" />
                 </button>
